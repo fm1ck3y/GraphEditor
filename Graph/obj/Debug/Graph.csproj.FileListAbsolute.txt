@@ -1,0 +1,13 @@
+c:\users\артём\documents\visual studio 2015\Projects\Graph\Graph\bin\Debug\Graph.exe.config
+C:\Users\Артём\documents\visual studio 2015\Projects\Graph\Graph\obj\Debug\Graph.csprojResolveAssemblyReference.cache
+C:\Users\Артём\documents\visual studio 2015\Projects\Graph\Graph\obj\Debug\Graph.csproj.GenerateResource.Cache
+C:\Users\Артём\Documents\Visual Studio 2015\Projects\Graph\Graph\bin\Debug\Graph.exe
+C:\Users\Артём\Documents\Visual Studio 2015\Projects\Graph\Graph\bin\Debug\Graph.pdb
+C:\Users\Артём\Documents\Visual Studio 2015\Projects\Graph\Graph\obj\Debug\Graph.Properties.Resources.resources
+C:\Users\Артём\Documents\Visual Studio 2015\Projects\Graph\Graph\obj\Debug\Graph.exe
+C:\Users\Артём\Documents\Visual Studio 2015\Projects\Graph\Graph\obj\Debug\Graph.pdb
+C:\Users\Артём\documents\visual studio 2015\Projects\Graph\Graph\obj\Debug\Graph.Main.resources
+C:\Users\Артём\Documents\Visual Studio 2015\Projects\Graph\Graph\bin\Debug\Graph.exe.manifest
+C:\Users\Артём\Documents\Visual Studio 2015\Projects\Graph\Graph\bin\Debug\Graph.application
+C:\Users\Артём\Documents\Visual Studio 2015\Projects\Graph\Graph\obj\Debug\Graph.exe.manifest
+C:\Users\Артём\Documents\Visual Studio 2015\Projects\Graph\Graph\obj\Debug\Graph.application
