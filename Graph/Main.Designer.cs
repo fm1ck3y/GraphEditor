@@ -62,6 +62,7 @@ namespace Graph
             this.graphicsPanel = new System.Windows.Forms.Panel();
             this.pBoxGraph = new System.Windows.Forms.PictureBox();
             this.colorVertex = new System.Windows.Forms.ColorDialog();
+            this.btnMST = new System.Windows.Forms.Button();
             this.pnlTools.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.vertexBindingSource)).BeginInit();
             this.rightPanel.SuspendLayout();
@@ -170,6 +171,7 @@ namespace Graph
             // 
             this.rightPanel.BackColor = System.Drawing.SystemColors.Control;
             this.rightPanel.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
+            this.rightPanel.Controls.Add(this.btnMST);
             this.rightPanel.Controls.Add(this.label4);
             this.rightPanel.Controls.Add(this.trackSizeVertex);
             this.rightPanel.Controls.Add(this.colorEdge);
@@ -389,6 +391,16 @@ namespace Graph
             this.pBoxGraph.MouseClick += new System.Windows.Forms.MouseEventHandler(this.pBoxGraph_MouseClick);
             this.pBoxGraph.MouseMove += new System.Windows.Forms.MouseEventHandler(this.pBoxGraph_MouseMove);
             // 
+            // btnMST
+            // 
+            this.btnMST.Location = new System.Drawing.Point(7, 279);
+            this.btnMST.Name = "btnMST";
+            this.btnMST.Size = new System.Drawing.Size(298, 23);
+            this.btnMST.TabIndex = 18;
+            this.btnMST.Text = "Найти кратчайшее остовное дерево";
+            this.btnMST.UseVisualStyleBackColor = true;
+            this.btnMST.Click += new System.EventHandler(this.btnMST_Click);
+            // 
             // Main
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
@@ -446,6 +458,7 @@ namespace Graph
         private Label label4;
         private TrackBar trackSizeVertex;
         private PictureBox pBoxGraph;
+        private Button btnMST;
     }
 }
 

@@ -44,6 +44,14 @@ namespace Graph
                 _vertexs.Add(new Vertex(nameVert, x, y));
             return _vertexs.FirstOrDefault(t => t.name == nameVert);
         }
+
+        public Vertex AddVertex(Vertex v)
+        {
+            if (!_vertexs.Contains(v))
+                _vertexs.Add(v);
+            return v;
+        }
+
         private char GetNameVertex()
         {
             for (int i = 65; i < 91; i++)
@@ -61,6 +69,14 @@ namespace Graph
                 thisEdge.cost = cost;
             return _edges.FirstOrDefault(t => t.v1 == v1 && t.v2 == v2);
         }
+
+        public Edge AddEdge(Edge edge)
+        {
+            if (!_edges.Contains(edge))
+                _edges.Add(edge);
+            return edge;
+        }
+
         public void RemoveVertex(char nameVert)
         {
             Vertex thisVert = _vertexs.FirstOrDefault(t => t.name == nameVert);
@@ -302,6 +318,39 @@ namespace Graph
                 }
             }
             return path;
+        }
+
+        public Graph FindMSTPrima() // rand - для проверки правильности работы алгоритма, потому-что случайные рёбра выбираем
+        {
+            List<Vertex> visitedV = new List<Vertex>(); // пройденные вершины
+            List<Edge> notVisitedE = new List<Edge>(); // не пройденные рёбра
+            foreach (var e in _edges) notVisitedE.Add(e); // добавляем туда все рёбка, которые есть в графе
+            Graph MST = new Graph(); // создаём новый граф
+            foreach (var v in _vertexs) MST.AddVertex(v);
+            Random rand = new Random();
+            visitedV.Add(_vertexs[rand.Next(0, _vertexs.Count)]); // случайным образом выбираем вершину
+            while (visitedV.Count != _vertexs.Count) // пока все вершины не пройдены
+            {
+                Edge _e = null; // объявляем ребро
+                int minCost = int.MaxValue; // устанавливаем цену (минимальная)
+                foreach (var edge in notVisitedE) // пробегаемся рёбрам, которые еще не добавлялись 
+                {
+                    // если одна из вершин есть в пройденных, а другой нет, тогда
+                    if (visitedV.Contains(edge.v1) && !visitedV.Contains(edge.v2) || visitedV.Contains(edge.v2) && !visitedV.Contains(edge.v1))
+                        if (edge.cost < minCost) // если цена ребра меньше
+                        {
+                            _e = edge; // сохраняем это ребро
+                            minCost = edge.cost; // сохраняем минимальную цену
+                        }
+                }
+                if (visitedV.Contains(_e.v1)) // если v1 - вершина которая пройдена
+                    visitedV.Add(_e.v2); // тогда добавляем вершину v2
+                else
+                    visitedV.Add(_e.v1); // иначе добавляем вершину v1, потому-что v2 пройдена
+                notVisitedE.Remove(_e); // ну грубо говоря, добалвяем в пройденные рёбра ребро _e
+                MST.AddEdge(_e); // добавляем это ребро в дерево
+            }
+            return MST; // возвращаем дерево
         }
     }
 }

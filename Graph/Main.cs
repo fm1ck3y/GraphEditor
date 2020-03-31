@@ -119,10 +119,11 @@ namespace Graph
             pen.Dispose();
         }
 
-        private void DrawEdge(Edge edge, Color color, string value = null)
+        private void DrawEdge(Edge edge, Color color, string value = null, bool EndCap = false)
         {
             Pen pen = new Pen(color, 2);
-            pen.CustomEndCap = new AdjustableArrowCap(5, 20);
+            if(!EndCap)
+                pen.CustomEndCap = new AdjustableArrowCap(5, 20);
             if (edge.v1 == edge.v2)
             {
                 Rectangle rec = new Rectangle(edge.v1.x + R, edge.v1.y, R / 2, R / 2);
@@ -148,7 +149,7 @@ namespace Graph
             }
         }
 
-        private void DrawGraph(List<Vertex> way = null, Vertex selectVertex = null, Graph mainGraph = null)
+        private void DrawGraph(List<Vertex> way = null, Vertex selectVertex = null, Graph mainGraph = null,bool MST = false)
         {
             if (mainGraph == null) mainGraph = this.mainGraph;
             g = Graphics.FromImage(bitmap);
@@ -163,10 +164,10 @@ namespace Graph
                 if (edges_way.FirstOrDefault(t => t.v1 == e.v1 && t.v2 == e.v2 || t.v1 == e.v2 && t.v2 == e.v1) != null)
                 {
                     if (edges_way.IndexOf(e) != -1)
-                        DrawEdge(e, Color.Green,"");
+                        DrawEdge(e, Color.Green,"",MST);
                 }
                 else
-                    DrawEdge(e, _ColorEdge);
+                    DrawEdge(e, _ColorEdge,null, MST);
             foreach (var v in mainGraph.vertexs)
                 if (way.Contains(v))
                     DrawVertex(v, Color.Black, Color.Black, Color.Red);
@@ -382,6 +383,15 @@ namespace Graph
             {
                 lblWay.Text = "Данный путь не существует.";
             }
+        }
+
+        private void btnMST_Click(object sender, EventArgs e)
+        {
+            Graph MST = mainGraph.FindMSTPrima();
+            DrawGraph(null,null,MST,true);
+            int cost = 0;
+            foreach (var edge in MST.edges) cost += edge.cost;
+            lblWay.Text = $"Вес минимального остовного дерева = {cost}";
         }
 
         private void btnChangeColorVertex_Click(object sender, EventArgs e)
