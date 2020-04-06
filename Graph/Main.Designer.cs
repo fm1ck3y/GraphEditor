@@ -43,6 +43,7 @@ namespace Graph
             this.btnCreateVert = new System.Windows.Forms.Button();
             this.vertexBindingSource = new System.Windows.Forms.BindingSource(this.components);
             this.rightPanel = new System.Windows.Forms.Panel();
+            this.btnMST = new System.Windows.Forms.Button();
             this.label4 = new System.Windows.Forms.Label();
             this.trackSizeVertex = new System.Windows.Forms.TrackBar();
             this.colorEdge = new System.Windows.Forms.PictureBox();
@@ -62,7 +63,7 @@ namespace Graph
             this.graphicsPanel = new System.Windows.Forms.Panel();
             this.pBoxGraph = new System.Windows.Forms.PictureBox();
             this.colorVertex = new System.Windows.Forms.ColorDialog();
-            this.btnMST = new System.Windows.Forms.Button();
+            this.btnEulerCycles = new System.Windows.Forms.Button();
             this.pnlTools.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.vertexBindingSource)).BeginInit();
             this.rightPanel.SuspendLayout();
@@ -171,6 +172,7 @@ namespace Graph
             // 
             this.rightPanel.BackColor = System.Drawing.SystemColors.Control;
             this.rightPanel.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
+            this.rightPanel.Controls.Add(this.btnEulerCycles);
             this.rightPanel.Controls.Add(this.btnMST);
             this.rightPanel.Controls.Add(this.label4);
             this.rightPanel.Controls.Add(this.trackSizeVertex);
@@ -194,6 +196,16 @@ namespace Graph
             this.rightPanel.Size = new System.Drawing.Size(315, 501);
             this.rightPanel.TabIndex = 0;
             this.rightPanel.Paint += new System.Windows.Forms.PaintEventHandler(this.rightPanel_Paint);
+            // 
+            // btnMST
+            // 
+            this.btnMST.Location = new System.Drawing.Point(7, 279);
+            this.btnMST.Name = "btnMST";
+            this.btnMST.Size = new System.Drawing.Size(298, 23);
+            this.btnMST.TabIndex = 18;
+            this.btnMST.Text = "Найти кратчайшее остовное дерево";
+            this.btnMST.UseVisualStyleBackColor = true;
+            this.btnMST.Click += new System.EventHandler(this.btnMST_Click);
             // 
             // label4
             // 
@@ -391,15 +403,15 @@ namespace Graph
             this.pBoxGraph.MouseClick += new System.Windows.Forms.MouseEventHandler(this.pBoxGraph_MouseClick);
             this.pBoxGraph.MouseMove += new System.Windows.Forms.MouseEventHandler(this.pBoxGraph_MouseMove);
             // 
-            // btnMST
+            // btnEulerCycles
             // 
-            this.btnMST.Location = new System.Drawing.Point(7, 279);
-            this.btnMST.Name = "btnMST";
-            this.btnMST.Size = new System.Drawing.Size(298, 23);
-            this.btnMST.TabIndex = 18;
-            this.btnMST.Text = "Найти кратчайшее остовное дерево";
-            this.btnMST.UseVisualStyleBackColor = true;
-            this.btnMST.Click += new System.EventHandler(this.btnMST_Click);
+            this.btnEulerCycles.Location = new System.Drawing.Point(7, 308);
+            this.btnEulerCycles.Name = "btnEulerCycles";
+            this.btnEulerCycles.Size = new System.Drawing.Size(298, 23);
+            this.btnEulerCycles.TabIndex = 19;
+            this.btnEulerCycles.Text = "Найти циклы эйлера";
+            this.btnEulerCycles.UseVisualStyleBackColor = true;
+            this.btnEulerCycles.Click += new System.EventHandler(this.btnEulerCycles_Click);
             // 
             // Main
             // 
@@ -459,6 +471,7 @@ namespace Graph
         private TrackBar trackSizeVertex;
         private PictureBox pBoxGraph;
         private Button btnMST;
+        private Button btnEulerCycles;
     }
 }
 

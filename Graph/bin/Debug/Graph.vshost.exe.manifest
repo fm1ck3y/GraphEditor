@@ -42,14 +42,14 @@
     </dependentAssembly>
   </dependency>
   <dependency>
-    <dependentAssembly dependencyType="install" allowDelayedBinding="true" codebase="Graph.exe" size="46048">
+    <dependentAssembly dependencyType="install" allowDelayedBinding="true" codebase="Graph.exe" size="48608">
       <assemblyIdentity name="Graph" version="1.0.0.0" language="neutral" processorArchitecture="msil" />
       <hash>
         <dsig:Transforms>
           <dsig:Transform Algorithm="urn:schemas-microsoft-com:HashTransforms.Identity" />
         </dsig:Transforms>
         <dsig:DigestMethod Algorithm="http://www.w3.org/2000/09/xmldsig#sha256" />
-        <dsig:DigestValue>Warg9lhZW2lguxvAs8vJ8U0Y6fGDDeUJK1ft0RojsT0=</dsig:DigestValue>
+        <dsig:DigestValue>YOsL5/YoV5S9OPmtPodgVWDUXmbH70gT1TTgMwC+Clk=</dsig:DigestValue>
       </hash>
     </dependentAssembly>
   </dependency>

@@ -151,7 +151,7 @@ namespace Graph
 
             for (int i = 0; i < matrix.GetLength(0); i++)
                 for (int j = 0; j < matrix.GetLength(0); j++)
-                    if (matrix[i, j] != 0) g.AddEdge(g.vertexs[i], g.vertexs[j],matrix[i,j]);
+                    if (matrix[i, j] != 0) g.AddEdge(g.vertexs[i], g.vertexs[j], matrix[i, j]);
             return g;
         }
         public int[,] MakeNonOriented()
@@ -160,7 +160,7 @@ namespace Graph
             for (int i = 0; i < matrix.GetLength(0); i++)
                 for (int j = 0; j < matrix.GetLength(0); j++)
                     if (matrix[i, j] != 0)
-                        matrix[j, i] = matrix[i,j];
+                        matrix[j, i] = matrix[i, j];
             return matrix;
         }
         public Dictionary<Vertex, int> MarkAllVertex(Vertex v_start, Vertex v_end, Dictionary<Vertex, int> visited_v, int d = 0)
@@ -351,6 +351,60 @@ namespace Graph
                 MST.AddEdge(_e); // добавляем это ребро в дерево
             }
             return MST; // возвращаем дерево
+        }
+
+        // ALGHORITM FIND CYCLES EULER
+        private List<Edge> temp_edges = new List<Edge>(); // все вершины, которые потом удаляются
+        private Dictionary<Edge, int> remove_edges = new Dictionary<Edge, int>();
+
+        private void DFSEuler(Vertex v, int k)
+        {
+            visited[v] = true; // добавляем в пройденные
+            foreach (Edge e in temp_edges) // пробегаемся по смежным
+                if (e.v1 == v && !visited.ContainsKey(e.v2)) // если вершины соседней нет в пройденных, то
+                {
+                    remove_edges[e] = k; // добавляем в список ребёр ребро
+                    DFSEuler(e.v2, k); // идём дальше в глубину
+                }
+        }
+
+        public List<Graph> FindEulerCycles()
+        {
+            foreach (var v in _vertexs)
+                if (_edges.Where(t => t.v1 == v).ToList().Count % 2 != 0) //проверяем степень на четность
+                    return null;
+            temp_edges = new List<Edge>();
+            List<Graph> graphs = new List<Graph>();
+            remove_edges = new Dictionary<Edge, int>();
+            foreach (var e in _edges)
+                temp_edges.Add(e);
+
+            int k = 0; // кол-во циклов
+            while (temp_edges.Count != 0) // пока в графе остались рёбра
+            {
+                visited = new Dictionary<Vertex, bool>(); // обнуляем пройденные вершины
+                graphs.Add(new Graph()); // создаём новый граф
+                Vertex this_v = null;
+                foreach (var v in _vertexs)
+                    if (temp_edges.Where(t => t.v1 == v).ToList().Count >= 1) //проверяем степень на четность
+                    {
+                        graphs[k].AddVertex(v); // добавляем сразу в граф
+                        this_v = v; // это вершина становится обрабатываемой
+                        break;
+                    }
+                DFSEuler(this_v, k); // идём в глубину 
+                foreach (var v in visited.Keys)
+                    graphs[k].AddVertex(v); // добавляем вершины в эйлера граф
+
+                foreach (var e in remove_edges.Keys)
+                    if (remove_edges[e] == k)
+                    {
+                        temp_edges.Remove(e); // удаляем из ребёр графа, чтобы больше их не проходить
+                        graphs[k].AddEdge(e); // добавляем в эйлера граф
+                    }
+                k++; // прибавляем кол-во графов
+            }
+            return graphs;
         }
     }
 }

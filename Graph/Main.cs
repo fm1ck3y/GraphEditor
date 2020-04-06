@@ -394,6 +394,26 @@ namespace Graph
             lblWay.Text = $"Вес минимального остовного дерева = {cost}";
         }
 
+        private void btnEulerCycles_Click(object sender, EventArgs e)
+        {
+            var graphs = mainGraph.FindEulerCycles();
+            _ColorVertex = Color.Green;
+            _ColorEdge = Color.Red;
+            if (graphs == null)
+            {
+                MessageBox.Show("Ошибка. Степень одной из вершин не четна!", "Ошибка", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                return;
+            }
+            foreach (var g in graphs)
+            {
+                DrawGraph(null, null, g,true);
+                Task.Delay(2000).GetAwaiter().GetResult();
+            }
+            _ColorVertex = colorV.BackColor;
+            _ColorEdge = colorEdge.BackColor;
+            DrawGraph();
+        }
+
         private void btnChangeColorVertex_Click(object sender, EventArgs e)
         {
             if (colorVertex.ShowDialog() == DialogResult.OK)
