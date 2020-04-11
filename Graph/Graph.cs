@@ -371,9 +371,6 @@ namespace Graph
 
         public List<Graph> FindEulerCycles()
         {
-            //foreach (var v in _vertexs)
-            //if (_edges.Where(t => t.v1 == v).ToList().Count % 2 != 0) //проверяем степень на четность
-            //        return null;
             temp_edges = new List<Edge>();
             List<Graph> graphs = new List<Graph>();
             remove_edges = new Dictionary<Edge, int>();
@@ -407,7 +404,7 @@ namespace Graph
                     }
                 foreach (var v in graphs[k].vertexs)
                 {
-                    if (_edges.Where(t => t.v1 == v || t.v2 == v).ToList().Count % 2 != 0)
+                    if (_edges.Where(t => t.v1 == v || t.v2 == v).ToList().Count % 2 != 0) // проверяем на четность вершины, для проверки на Эйлеров цикл
                     {
                         graphs.RemoveAt(k);
                         k--;
