@@ -397,13 +397,13 @@ namespace Graph
         private void btnEulerCycles_Click(object sender, EventArgs e)
         {
             var graphs = mainGraph.FindEulerCycles();
-            _ColorVertex = Color.Green;
-            _ColorEdge = Color.Red;
-            if (graphs == null)
+            if (graphs.Count == 0)
             {
-                MessageBox.Show("Ошибка. Степень одной из вершин не четна!", "Ошибка", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                MessageBox.Show("Ошибка. В данном графе нет циклов Эйлера.", "Ошибка", MessageBoxButtons.OK, MessageBoxIcon.Error);
                 return;
             }
+            _ColorVertex = Color.Green;
+            _ColorEdge = Color.Red;
             foreach (var g in graphs)
             {
                 DrawGraph(null, null, g,true);

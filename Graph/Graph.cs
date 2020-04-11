@@ -359,9 +359,10 @@ namespace Graph
 
         private void DFSEuler(Vertex v, int k)
         {
+            if (visited.ContainsKey(v)) return;
             visited[v] = true; // добавляем в пройденные
             foreach (Edge e in temp_edges) // пробегаемся по смежным
-                if (e.v1 == v && !visited.ContainsKey(e.v2)) // если вершины соседней нет в пройденных, то
+                if (e.v1 == v) // если вершины соседней нет в пройденных, то
                 {
                     remove_edges[e] = k; // добавляем в список ребёр ребро
                     DFSEuler(e.v2, k); // идём дальше в глубину
@@ -370,9 +371,9 @@ namespace Graph
 
         public List<Graph> FindEulerCycles()
         {
-            foreach (var v in _vertexs)
-                if (_edges.Where(t => t.v1 == v).ToList().Count % 2 != 0) //проверяем степень на четность
-                    return null;
+            //foreach (var v in _vertexs)
+            //if (_edges.Where(t => t.v1 == v).ToList().Count % 2 != 0) //проверяем степень на четность
+            //        return null;
             temp_edges = new List<Edge>();
             List<Graph> graphs = new List<Graph>();
             remove_edges = new Dictionary<Edge, int>();
@@ -382,13 +383,12 @@ namespace Graph
             int k = 0; // кол-во циклов
             while (temp_edges.Count != 0) // пока в графе остались рёбра
             {
-                visited = new Dictionary<Vertex, bool>(); // обнуляем пройденные вершины
+                visited = new Dictionary<Vertex, bool>();
                 graphs.Add(new Graph()); // создаём новый граф
                 Vertex this_v = null;
                 foreach (var v in _vertexs)
                     if (temp_edges.Where(t => t.v1 == v).ToList().Count >= 1) //проверяем степень на четность
                     {
-                        graphs[k].AddVertex(v); // добавляем сразу в граф
                         this_v = v; // это вершина становится обрабатываемой
                         break;
                     }
@@ -399,9 +399,21 @@ namespace Graph
                 foreach (var e in remove_edges.Keys)
                     if (remove_edges[e] == k)
                     {
+                        
+                        Edge _e = temp_edges.FirstOrDefault(t => t.v2 == e.v1 && t.v1 == e.v2);
+                        if (_e != null) temp_edges.Remove(_e);
                         temp_edges.Remove(e); // удаляем из ребёр графа, чтобы больше их не проходить
                         graphs[k].AddEdge(e); // добавляем в эйлера граф
                     }
+                foreach (var v in graphs[k].vertexs)
+                {
+                    if (_edges.Where(t => t.v1 == v || t.v2 == v).ToList().Count % 2 != 0)
+                    {
+                        graphs.RemoveAt(k);
+                        k--;
+                        break;
+                    }
+                }
                 k++; // прибавляем кол-во графов
             }
             return graphs;
