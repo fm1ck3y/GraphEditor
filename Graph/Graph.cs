@@ -372,18 +372,18 @@ namespace Graph
 
         public List<Graph> FindEulerCycles()
         {
-            temp_edges = new List<Edge>();
-            List<Graph> graphs = new List<Graph>();
-            remove_edges = new Dictionary<Edge, int>();
+            temp_edges = new List<Edge>(); // все рёбра графа, создано, для того, чтобы не удалять из основного графа вершины
+            List<Graph> graphs = new List<Graph>(); // циклы Эйлера в виде графа
+            remove_edges = new Dictionary<Edge, int>(); // последовательно удалённые рёбра из графа, int - номер эйлерова цикла
             foreach (var e in _edges)
                 temp_edges.Add(e);
 
             int k = 0; // кол-во циклов
             while (temp_edges.Count != 0) // пока в графе остались рёбра
             {
-                visited = new Dictionary<Vertex, bool>();
+                visited = new Dictionary<Vertex, bool>(); // пройденные вершины
                 graphs.Add(new Graph()); // создаём новый граф
-                Vertex this_v = null;
+                Vertex this_v = null; // переменная для начальной вершины цикла
                 foreach (var v in _vertexs)
                     if (temp_edges.Where(t => t.v1 == v).ToList().Count >= 1) //проверяем степень на четность
                     {
@@ -397,9 +397,6 @@ namespace Graph
                 foreach (var e in remove_edges.Keys)
                     if (remove_edges[e] == k)
                     {
-                        
-                        Edge _e = temp_edges.FirstOrDefault(t => t.v2 == e.v1 && t.v1 == e.v2);
-                        if (_e != null) temp_edges.Remove(_e);
                         temp_edges.Remove(e); // удаляем из ребёр графа, чтобы больше их не проходить
                         graphs[k].AddEdge(e); // добавляем в эйлера граф
                     }
@@ -407,7 +404,7 @@ namespace Graph
                 {
                     if (_edges.Where(t => t.v1 == v || t.v2 == v).ToList().Count % 2 != 0) // проверяем на четность вершины, для проверки на Эйлеров цикл
                     {
-                        graphs.RemoveAt(k);
+                        graphs.RemoveAt(k); // если степень хотя бы одной вершины не четна, то мы не считаем этот цикл
                         k--;
                         break;
                     }
