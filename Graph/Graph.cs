@@ -174,7 +174,7 @@ namespace Graph
                     if (visited_v[h] == d)
                         foreach (Edge edge in _edges)
                             if (edge.v1 == h && !visited_v.ContainsKey(edge.v2))
-                                _visited.Add(edge.v2, d + 1);
+                                _visited[edge.v2] = d + 1;
                 d++;
                 foreach (var h in _visited.Keys)
                     visited_v.Add(h, _visited[h]);
@@ -185,6 +185,7 @@ namespace Graph
         {
             List<Vertex> way = new List<Vertex>();
             Dictionary<Vertex, int> _visited = new Dictionary<Vertex, int>();
+            visited = new Dictionary<Vertex, bool>();
             _visited = MarkAllVertex(v_start, v_end, _visited);
             int[,] matrix = MakeNonOriented();
             Graph g = DownloadAdjacencyMatrix(matrix, null, _vertexs);
