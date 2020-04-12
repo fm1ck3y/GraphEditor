@@ -387,11 +387,19 @@ namespace Graph
 
         private void btnMST_Click(object sender, EventArgs e)
         {
-            Graph MST = mainGraph.FindMSTPrima();
-            DrawGraph(null,null,MST,true);
-            int cost = 0;
-            foreach (var edge in MST.edges) cost += edge.cost;
-            lblWay.Text = $"Вес минимального остовного дерева = {cost}";
+            try
+            {
+                Graph MST = mainGraph.FindMSTPrima();
+                DrawGraph(null, null, MST, true);
+                int cost = 0;
+                foreach (var edge in MST.edges) cost += edge.cost;
+                lblWay.Text = $"Вес минимального остовного дерева = {cost}";
+            }
+            catch (Exception)
+            {
+                MessageBox.Show("Ошибка. Остовное дерево в графе невозможно найти!", "Ошибка", MessageBoxButtons.OK, MessageBoxIcon.Error);
+            }
+            
         }
 
         private void btnEulerCycles_Click(object sender, EventArgs e)
