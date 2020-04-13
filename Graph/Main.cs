@@ -9,7 +9,6 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
-using System.Xml.Serialization;
 
 namespace Graph
 {
@@ -126,7 +125,7 @@ namespace Graph
         private void DrawEdge(Edge edge, Color color, string value = null, bool EndCap = false)
         {
             Pen pen = new Pen(color, 2);
-            if(!EndCap)
+            if (!EndCap)
                 pen.CustomEndCap = new AdjustableArrowCap(5, 20);
             if (edge.v1 == edge.v2)
             {
@@ -153,7 +152,7 @@ namespace Graph
             }
         }
 
-        private void DrawGraph(List<Vertex> way = null, Vertex selectVertex = null, Graph mainGraph = null,bool MST = false)
+        private void DrawGraph(List<Vertex> way = null, Vertex selectVertex = null, Graph mainGraph = null, bool MST = false)
         {
             if (mainGraph == null) mainGraph = this.mainGraph;
             g = Graphics.FromImage(bitmap);
@@ -168,10 +167,10 @@ namespace Graph
                 if (edges_way.FirstOrDefault(t => t.v1 == e.v1 && t.v2 == e.v2 || t.v1 == e.v2 && t.v2 == e.v1) != null)
                 {
                     if (edges_way.IndexOf(e) != -1)
-                        DrawEdge(e, Color.Green,"",MST);
+                        DrawEdge(e, Color.Green, "", MST);
                 }
                 else
-                    DrawEdge(e, _ColorEdge,null, MST);
+                    DrawEdge(e, _ColorEdge, null, MST);
             foreach (var v in mainGraph.vertexs)
                 if (way.Contains(v))
                     DrawVertex(v, Color.Black, Color.Black, Color.Red);
@@ -380,6 +379,7 @@ namespace Graph
 
         private void button2_Click(object sender, EventArgs e)
         {
+
             try
             {
                 Vertex v1 = mainGraph.vertexs.FirstOrDefault(t => t.name.ToString() == cbSelectStart.Text), v2 = mainGraph.vertexs.FirstOrDefault(t => t.name.ToString() == cbEnd.Text);
@@ -410,7 +410,7 @@ namespace Graph
             {
                 MessageBox.Show("Ошибка. Остовное дерево в графе невозможно найти!", "Ошибка", MessageBoxButtons.OK, MessageBoxIcon.Error);
             }
-            
+
         }
 
         private void btnEulerCycles_Click(object sender, EventArgs e)
@@ -425,7 +425,7 @@ namespace Graph
             _ColorEdge = Color.Red;
             foreach (var g in graphs)
             {
-                DrawGraph(null, null, g,true);
+                DrawGraph(null, null, g, true);
                 Task.Delay(2000).GetAwaiter().GetResult();
             }
             _ColorVertex = colorV.BackColor;
@@ -467,6 +467,47 @@ namespace Graph
                 return;
             mainGraph = mainGraph.DeserializeThisObject(OFDialog.FileName);
             DrawGraph();
+            UpdateGrid();
+
+        }
+
+        private void button3_Click(object sender, EventArgs e)
+        {
+            var graphs = mainGraph.HamiltonianPath();
+            foreach (var g in graphs)
+            {
+                DrawGraph(g.vertexs, null, g);
+                Task.Delay(2000).GetAwaiter().GetResult();
+            }
+        }
+
+        private void button4_Click_1(object sender, EventArgs e)
+        {
+            int[,] allDistances = mainGraph.GetAllDistancesDijkstra();
+            if (SVDialog.ShowDialog() == DialogResult.Cancel)
+                return;
+            List<string> rows = new List<string>();
+            for (int j = 0; j < allDistances.GetUpperBound(0) + 1; j++)
+            {
+                string tmp = "";
+                for (int i = 0; i < allDistances.GetUpperBound(1) + 1; i++)
+                {
+                    tmp += allDistances[j, i].ToString() + " ";
+                }
+                rows.Add(tmp);
+            }
+            FileStream fs = new FileStream(SVDialog.FileName, FileMode.Create, FileAccess.Write);
+            using (StreamWriter sw = new StreamWriter(fs))
+                foreach (var row in rows.Distinct().ToList())
+                    sw.WriteLine(row);
+        }
+
+        private void btnCentre_Click(object sender, EventArgs e)
+        {
+            Vertex centreV = mainGraph.CentreVertexInGraph();
+            List<Vertex> centres = new List<Vertex>();
+            centres.Add(centreV);
+            DrawGraph(centres);
         }
 
         private void btnChangeColorVertex_Click(object sender, EventArgs e)
