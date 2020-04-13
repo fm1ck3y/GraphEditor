@@ -43,6 +43,7 @@ namespace Graph
             this.btnCreateVert = new System.Windows.Forms.Button();
             this.vertexBindingSource = new System.Windows.Forms.BindingSource(this.components);
             this.rightPanel = new System.Windows.Forms.Panel();
+            this.btnEulerCycles = new System.Windows.Forms.Button();
             this.btnMST = new System.Windows.Forms.Button();
             this.label4 = new System.Windows.Forms.Label();
             this.trackSizeVertex = new System.Windows.Forms.TrackBar();
@@ -63,7 +64,11 @@ namespace Graph
             this.graphicsPanel = new System.Windows.Forms.Panel();
             this.pBoxGraph = new System.Windows.Forms.PictureBox();
             this.colorVertex = new System.Windows.Forms.ColorDialog();
-            this.btnEulerCycles = new System.Windows.Forms.Button();
+            this.btnCyclomatic = new System.Windows.Forms.Button();
+            this.btnSave = new System.Windows.Forms.Button();
+            this.btnDownload = new System.Windows.Forms.Button();
+            this.OFDialog = new System.Windows.Forms.OpenFileDialog();
+            this.SVDialog = new System.Windows.Forms.SaveFileDialog();
             this.pnlTools.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.vertexBindingSource)).BeginInit();
             this.rightPanel.SuspendLayout();
@@ -172,6 +177,9 @@ namespace Graph
             // 
             this.rightPanel.BackColor = System.Drawing.SystemColors.Control;
             this.rightPanel.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
+            this.rightPanel.Controls.Add(this.btnDownload);
+            this.rightPanel.Controls.Add(this.btnSave);
+            this.rightPanel.Controls.Add(this.btnCyclomatic);
             this.rightPanel.Controls.Add(this.btnEulerCycles);
             this.rightPanel.Controls.Add(this.btnMST);
             this.rightPanel.Controls.Add(this.label4);
@@ -196,6 +204,16 @@ namespace Graph
             this.rightPanel.Size = new System.Drawing.Size(315, 501);
             this.rightPanel.TabIndex = 0;
             this.rightPanel.Paint += new System.Windows.Forms.PaintEventHandler(this.rightPanel_Paint);
+            // 
+            // btnEulerCycles
+            // 
+            this.btnEulerCycles.Location = new System.Drawing.Point(7, 308);
+            this.btnEulerCycles.Name = "btnEulerCycles";
+            this.btnEulerCycles.Size = new System.Drawing.Size(298, 23);
+            this.btnEulerCycles.TabIndex = 19;
+            this.btnEulerCycles.Text = "Найти циклы эйлера";
+            this.btnEulerCycles.UseVisualStyleBackColor = true;
+            this.btnEulerCycles.Click += new System.EventHandler(this.btnEulerCycles_Click);
             // 
             // btnMST
             // 
@@ -403,15 +421,39 @@ namespace Graph
             this.pBoxGraph.MouseClick += new System.Windows.Forms.MouseEventHandler(this.pBoxGraph_MouseClick);
             this.pBoxGraph.MouseMove += new System.Windows.Forms.MouseEventHandler(this.pBoxGraph_MouseMove);
             // 
-            // btnEulerCycles
+            // btnCyclomatic
             // 
-            this.btnEulerCycles.Location = new System.Drawing.Point(7, 308);
-            this.btnEulerCycles.Name = "btnEulerCycles";
-            this.btnEulerCycles.Size = new System.Drawing.Size(298, 23);
-            this.btnEulerCycles.TabIndex = 19;
-            this.btnEulerCycles.Text = "Найти циклы эйлера";
-            this.btnEulerCycles.UseVisualStyleBackColor = true;
-            this.btnEulerCycles.Click += new System.EventHandler(this.btnEulerCycles_Click);
+            this.btnCyclomatic.Location = new System.Drawing.Point(9, 337);
+            this.btnCyclomatic.Name = "btnCyclomatic";
+            this.btnCyclomatic.Size = new System.Drawing.Size(296, 23);
+            this.btnCyclomatic.TabIndex = 20;
+            this.btnCyclomatic.Text = "Цикломатическая матрица";
+            this.btnCyclomatic.UseVisualStyleBackColor = true;
+            this.btnCyclomatic.Click += new System.EventHandler(this.btnCyclomatic_Click);
+            // 
+            // btnSave
+            // 
+            this.btnSave.Location = new System.Drawing.Point(9, 364);
+            this.btnSave.Name = "btnSave";
+            this.btnSave.Size = new System.Drawing.Size(147, 23);
+            this.btnSave.TabIndex = 21;
+            this.btnSave.Text = "Сохранить граф";
+            this.btnSave.UseVisualStyleBackColor = true;
+            this.btnSave.Click += new System.EventHandler(this.btnSave_Click);
+            // 
+            // btnDownload
+            // 
+            this.btnDownload.Location = new System.Drawing.Point(158, 364);
+            this.btnDownload.Name = "btnDownload";
+            this.btnDownload.Size = new System.Drawing.Size(147, 23);
+            this.btnDownload.TabIndex = 22;
+            this.btnDownload.Text = "Загрузить граф";
+            this.btnDownload.UseVisualStyleBackColor = true;
+            this.btnDownload.Click += new System.EventHandler(this.btnDownload_Click);
+            // 
+            // OFDialog
+            // 
+            this.OFDialog.FileName = "OFDialog";
             // 
             // Main
             // 
@@ -472,6 +514,11 @@ namespace Graph
         private PictureBox pBoxGraph;
         private Button btnMST;
         private Button btnEulerCycles;
+        private Button btnCyclomatic;
+        private Button btnDownload;
+        private Button btnSave;
+        private OpenFileDialog OFDialog;
+        private SaveFileDialog SVDialog;
     }
 }
 

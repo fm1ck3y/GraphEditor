@@ -6,7 +6,8 @@ using System.Threading.Tasks;
 
 namespace Graph
 {
-class Edge
+    [Serializable]
+    public class Edge
     {
         public Vertex v1, v2;
         public int cost;

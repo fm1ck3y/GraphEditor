@@ -4,10 +4,12 @@ using System.ComponentModel;
 using System.Data;
 using System.Drawing;
 using System.Drawing.Drawing2D;
+using System.IO;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
+using System.Xml.Serialization;
 
 namespace Graph
 {
@@ -43,6 +45,8 @@ namespace Graph
             _ColorEdge = colorEdge.BackColor;
             UpdateGrid();
             bitmap = new Bitmap(graphicsPanel.Width, graphicsPanel.Height);
+            OFDialog.Filter = "Text files(*.dat)|*.dat|All files(*.*)|*.*";
+            SVDialog.Filter = "Text files(*.dat)|*.dat|All files(*.*)|*.*";
         }
 
         private void Main_Load(object sender, EventArgs e)
@@ -195,10 +199,17 @@ namespace Graph
 
         private void Main_SizeChanged(object sender, EventArgs e)
         {
-            pBoxGraph.Width = graphicsPanel.Width - rightPanel.Width;
-            pBoxGraph.Height = graphicsPanel.Height;
-            bitmap = new Bitmap(graphicsPanel.Width, graphicsPanel.Height);
-            DrawGraph();
+            try
+            {
+                pBoxGraph.Width = graphicsPanel.Width - rightPanel.Width;
+                pBoxGraph.Height = graphicsPanel.Height;
+                bitmap = new Bitmap(graphicsPanel.Width, graphicsPanel.Height);
+            }
+            catch { }
+            finally
+            {
+                DrawGraph();
+            }
         }
 
         private List<Edge> GenerateEdges(List<Vertex> way)
@@ -419,6 +430,42 @@ namespace Graph
             }
             _ColorVertex = colorV.BackColor;
             _ColorEdge = colorEdge.BackColor;
+            DrawGraph();
+        }
+
+        private void btnCyclomatic_Click(object sender, EventArgs e)
+        {
+            int[,] cyclomaticMatrix = mainGraph.CyclomaticMatrix();
+            if (SVDialog.ShowDialog() == DialogResult.Cancel)
+                return;
+            List<string> rows = new List<string>();
+            for (int j = 0; j < cyclomaticMatrix.GetUpperBound(0) + 1; j++)
+            {
+                string tmp = "";
+                for (int i = 0; i < cyclomaticMatrix.GetUpperBound(1) + 1; i++)
+                {
+                    tmp += cyclomaticMatrix[j, i].ToString() + " ";
+                }
+                rows.Add(tmp);
+            }
+            FileStream fs = new FileStream(SVDialog.FileName, FileMode.Create, FileAccess.Write);
+            using (StreamWriter sw = new StreamWriter(fs))
+                foreach (var row in rows.Distinct().ToList())
+                    sw.WriteLine(row);
+        }
+
+        private void btnSave_Click(object sender, EventArgs e)
+        {
+            if (SVDialog.ShowDialog() == DialogResult.Cancel)
+                return;
+            mainGraph.SerializeThisObject(SVDialog.FileName);
+        }
+
+        private void btnDownload_Click(object sender, EventArgs e)
+        {
+            if (OFDialog.ShowDialog() == DialogResult.Cancel)
+                return;
+            mainGraph = mainGraph.DeserializeThisObject(OFDialog.FileName);
             DrawGraph();
         }
 

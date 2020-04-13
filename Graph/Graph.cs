@@ -1,12 +1,16 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
+using System.Runtime.Serialization.Formatters.Binary;
 using System.Text;
 using System.Threading.Tasks;
+using System.Xml.Serialization;
 
 namespace Graph
 {
-    class Graph
+    [Serializable]
+    public class Graph
     {
         private List<Vertex> _vertexs = new List<Vertex>();
         private List<Edge> _edges = new List<Edge>();
@@ -412,6 +416,77 @@ namespace Graph
                 k++; // прибавляем кол-во графов
             }
             return graphs;
+        }
+
+
+        private bool DFSCycle(Vertex v_start, Vertex v)
+        {
+            if (visited.ContainsKey(v))
+                if (v == v_start)
+                    return true;
+                else return false;
+            visited[v] = true; // добавляем в пройденные
+            foreach (Edge e in temp_edges) // пробегаемся по смежным
+                if (e.v1 == v) // если вершины соседней нет в пройденных, то
+                {
+                    remove_edges[e] = 0; // добавляем в список ребёр ребро
+                    if (DFSCycle(v_start, e.v2) == true) return true; // идём дальше в глубину
+                }
+            return false;
+        }
+
+        private int[] GetCycleVector(Graph g)
+        {
+            // return vector
+            return new int[1];
+        }
+
+        public int[,] CyclomaticMatrix()
+        {
+            Graph MST = this.FindMSTPrima();
+            int cycles = _edges.Count - MST.edges.Count; // all edges minus edges MST
+            int[,] matrix = new int[cycles, _edges.Count / 2];
+            int k = 0;
+            var visited_edges = new List<Edge>();
+            foreach (Edge e in _edges)
+            {
+                if (visited_edges.Contains(e)) continue;
+                var _e = _edges.FirstOrDefault(t => t.v2 == e.v1 && t.v1 == e.v2);
+                if (!MST.edges.Contains(e) && !MST.edges.Contains(_e))
+                {
+                    if (_e != null)
+                    {
+                        MST.AddEdge(_e);
+                        visited_edges.Add(_e);
+                    }
+                    MST.AddEdge(e);
+                    visited_edges.Add(e);
+                    int[] vector = GetCycleVector(MST);
+                    MST.edges.Remove(e);
+                    if (_e != null) MST.edges.Remove(_e);
+                    for (int i = 0; i < vector.Length; i++)
+                        matrix[k, i] = vector[i];
+                    k++;
+                }
+            }
+            return matrix;
+        }
+
+        public void SerializeThisObject(string filename)
+        {
+            FileStream stream = File.Create($"{filename}");
+            BinaryFormatter formatter = new BinaryFormatter();
+            formatter.Serialize(stream, this);
+            stream.Close();
+        }
+
+        public Graph DeserializeThisObject(string filename)
+        {
+            FileStream stream = File.OpenRead($"{filename}");
+            BinaryFormatter formatter = new BinaryFormatter();
+            Graph g = formatter.Deserialize(stream) as Graph;
+            stream.Close();
+            return g;
         }
     }
 }

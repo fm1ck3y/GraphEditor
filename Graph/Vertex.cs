@@ -6,7 +6,8 @@ using System.Threading.Tasks;
 
 namespace Graph
 {
-    class Vertex
+    [Serializable]
+    public class Vertex
     {
         public int x, y;
         public char name;
