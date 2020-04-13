@@ -5,7 +5,6 @@ using System.Linq;
 using System.Runtime.Serialization.Formatters.Binary;
 using System.Text;
 using System.Threading.Tasks;
-using System.Xml.Serialization;
 
 namespace Graph
 {
@@ -325,6 +324,23 @@ namespace Graph
             return path;
         }
 
+        public int[,] GetAllDistancesDijkstra()
+        {
+            int[,] matrix = new int[_vertexs.Count, _vertexs.Count];
+            int k = 0;
+            foreach (var v in _vertexs)
+            {
+                int i = 0;
+                foreach (var _v in _vertexs)
+                {
+                    var path = DijkstraSearchPath(v, _v);
+                    matrix[k, i++] = distances[_v];
+                }
+                k++;
+            }
+            return matrix;
+        }
+
         public Graph FindMSTPrima() // rand - для проверки правильности работы алгоритма, потому-что случайные рёбра выбираем
         {
             List<Vertex> visitedV = new List<Vertex>(); // пройденные вершины
@@ -471,6 +487,38 @@ namespace Graph
             }
             return matrix;
         }
+
+        
+        public List<Graph> HamiltonianPath()
+        {
+            var markedMatrix = MatrixExt.MarkedMatrix(CreateAdjacencyMatrix());
+            var auxiliaryMatrix = MatrixExt.AuxiliaryMatrix(markedMatrix);
+            var HamiltoncycleMatrix = MatrixExt.MatrixMultiplication(MatrixExt.PowMatrix(markedMatrix, _vertexs.Count - 1), auxiliaryMatrix);
+            var HamiltonPathMatrix = MatrixExt.MatrixMultiplication(MatrixExt.PowMatrix(markedMatrix, _vertexs.Count - 2), auxiliaryMatrix);
+            List<Graph> hamiltonCycles = new List<Graph>();
+            int u = 0;
+            for (int i = 0; i < HamiltoncycleMatrix.GetLength(0); i++)
+            {
+                for (int j = 0; j < HamiltoncycleMatrix.GetLength(0); j++)
+                {
+                    if (HamiltoncycleMatrix[i,j] != 0)
+                    {
+                        hamiltonCycles.Add(new Graph());
+                        int index_i = int.Parse(HamiltoncycleMatrix[i, j].ToString()[0].ToString())-1;
+                        hamiltonCycles[u].AddVertex(_vertexs[index_i]);
+                        for (int k = 0; k < HamiltoncycleMatrix[i,j].ToString().Length-1; k++)
+                        {
+                            index_i = int.Parse(HamiltoncycleMatrix[i, j].ToString()[k].ToString())-1;
+                            int index_j = int.Parse(HamiltoncycleMatrix[i, j].ToString()[k+1].ToString())-1;
+                            hamiltonCycles[u].AddVertex(_vertexs[index_j]);
+                            hamiltonCycles[u].AddEdge(new Edge(_vertexs[index_i], _vertexs[index_j], 1));
+                        }
+                    }
+                }
+            }
+            return hamiltonCycles;
+        }
+
 
         public void SerializeThisObject(string filename)
         {
