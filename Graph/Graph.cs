@@ -519,6 +519,25 @@ namespace Graph
             return hamiltonCycles;
         }
 
+        public Vertex CentreVertexInGraph()
+        {
+            var matrix = GetAllDistancesDijkstra();
+            int[] vector = new int[matrix.GetLength(0)];
+            for (int i = 0; i < matrix.GetLength(0); i++)
+                for (int j = 0; j < matrix.GetLength(0); j++)
+                    if (matrix[i, j] > vector[i]) vector[i] = matrix[i, j];
+            int index = 0;
+            int min = vector[0];
+            for (int i = 0; i < vector.Length; i++)
+            {
+                if(vector[i] < min)
+                {
+                    index = i;
+                    min = vector[i];
+                }
+            }
+            return _vertexs[index];
+        }
 
         public void SerializeThisObject(string filename)
         {
