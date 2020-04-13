@@ -39,11 +39,43 @@ namespace Graph
 
             return matrixC;
         }
+
+        public static int[,] MatrixMultiplication(int[,] matrixA, int[,] matrixB)
+        {
+            if (matrixA.ColumnsCount() != matrixB.RowsCount())
+                throw new Exception("Умножение не возможно! Количество столбцов первой матрицы не равно количеству строк второй матрицы.");
+
+            var matrixC = new int[matrixA.RowsCount(), matrixB.ColumnsCount()];
+
+            for (var i = 0; i < matrixA.RowsCount(); i++)
+            {
+                for (var j = 0; j < matrixB.ColumnsCount(); j++)
+                {
+                    int mnoj = 0;
+                    for (var k = 0; k < matrixA.ColumnsCount(); k++)
+                    {
+                        mnoj += matrixA[i, k] * matrixB[k, j];
+                    }
+                    matrixC[i, j] = mnoj;
+                }
+            }
+
+            return matrixC;
+        }
+
         public static int[,] BoolPowMatrix(int[,] matrixA, int n)
         {
             var matrixC = new int[matrixA.RowsCount(), matrixA.ColumnsCount()];
             for (int i = 0; i < n - 1; i++)
                 matrixC = BoolMatrixMultiplication(matrixC, matrixA);
+            return matrixC;
+        }
+
+        public static int[,] PowMatrix(int[,] matrixA, int n)
+        {
+            var matrixC = matrixA;
+            for (int i = 0; i < n - 1; i++)
+                matrixC = MatrixMultiplication(matrixC, matrixA);
             return matrixC;
         }
         public static int[,] BoolPlusMatrix(int[,] matrixA, int[,] matrixB)
@@ -84,6 +116,34 @@ namespace Graph
                 for (int j = 0; j < matrixA.ColumnsCount(); j++)
                     matrixC[j, i] = matrixA[i, j];
             return matrixC;
+        }
+
+        public static int[,] MarkedMatrix(int[,] matrix)
+        {
+            int[,] markedMatrix = new int[matrix.GetLength(0), matrix.GetLength(0)];
+            for (int i = 0; i < matrix.GetLength(0); i++)
+            {
+                for (int j = 0; j < matrix.GetLength(0); j++)
+                {
+                    if (matrix[i, j] != 0) markedMatrix[i, j] = int.Parse((i + 1).ToString() + (j + 1).ToString());
+                    else markedMatrix[i, j] = 0;
+                }
+            }
+            return markedMatrix;
+        }
+
+        public static  int[,] AuxiliaryMatrix(int [,] markedMatrix)
+        {
+            int[,] auxiliaryMatrix = new int[markedMatrix.GetLength(0), markedMatrix.GetLength(0)];
+            for (int i = 0; i < markedMatrix.GetLength(0); i++)
+            {
+                for (int j = 0; j < markedMatrix.GetLength(0); j++)
+                {
+                    if (markedMatrix[i, j] != 0) auxiliaryMatrix[i, j] = int.Parse(markedMatrix[i, j].ToString().Remove(0,1));
+                    else auxiliaryMatrix[i, j] = 0;
+                }
+            }
+            return auxiliaryMatrix;
         }
     }
 }
