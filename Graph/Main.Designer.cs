@@ -43,6 +43,9 @@ namespace Graph
             this.btnCreateVert = new System.Windows.Forms.Button();
             this.vertexBindingSource = new System.Windows.Forms.BindingSource(this.components);
             this.rightPanel = new System.Windows.Forms.Panel();
+            this.btnCentre = new System.Windows.Forms.Button();
+            this.button4 = new System.Windows.Forms.Button();
+            this.button3 = new System.Windows.Forms.Button();
             this.btnDownload = new System.Windows.Forms.Button();
             this.btnSave = new System.Windows.Forms.Button();
             this.btnCyclomatic = new System.Windows.Forms.Button();
@@ -69,9 +72,6 @@ namespace Graph
             this.colorVertex = new System.Windows.Forms.ColorDialog();
             this.OFDialog = new System.Windows.Forms.OpenFileDialog();
             this.SVDialog = new System.Windows.Forms.SaveFileDialog();
-            this.button3 = new System.Windows.Forms.Button();
-            this.button4 = new System.Windows.Forms.Button();
-            this.btnCentre = new System.Windows.Forms.Button();
             this.pnlTools.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.vertexBindingSource)).BeginInit();
             this.rightPanel.SuspendLayout();
@@ -210,6 +210,36 @@ namespace Graph
             this.rightPanel.Size = new System.Drawing.Size(315, 544);
             this.rightPanel.TabIndex = 0;
             this.rightPanel.Paint += new System.Windows.Forms.PaintEventHandler(this.rightPanel_Paint);
+            // 
+            // btnCentre
+            // 
+            this.btnCentre.Location = new System.Drawing.Point(156, 316);
+            this.btnCentre.Name = "btnCentre";
+            this.btnCentre.Size = new System.Drawing.Size(149, 23);
+            this.btnCentre.TabIndex = 25;
+            this.btnCentre.Text = "Центр графа";
+            this.btnCentre.UseVisualStyleBackColor = true;
+            this.btnCentre.Click += new System.EventHandler(this.btnCentre_Click);
+            // 
+            // button4
+            // 
+            this.button4.Location = new System.Drawing.Point(159, 230);
+            this.button4.Name = "button4";
+            this.button4.Size = new System.Drawing.Size(143, 23);
+            this.button4.TabIndex = 24;
+            this.button4.Text = "Кратчайшие пути";
+            this.button4.UseVisualStyleBackColor = true;
+            this.button4.Click += new System.EventHandler(this.button4_Click_1);
+            // 
+            // button3
+            // 
+            this.button3.Location = new System.Drawing.Point(9, 378);
+            this.button3.Name = "button3";
+            this.button3.Size = new System.Drawing.Size(296, 23);
+            this.button3.TabIndex = 23;
+            this.button3.Text = "Гамильтоновы циклы";
+            this.button3.UseVisualStyleBackColor = true;
+            this.button3.Click += new System.EventHandler(this.button3_Click);
             // 
             // btnDownload
             // 
@@ -461,36 +491,6 @@ namespace Graph
             // OFDialog
             // 
             this.OFDialog.FileName = "OFDialog";
-            // 
-            // button3
-            // 
-            this.button3.Location = new System.Drawing.Point(9, 378);
-            this.button3.Name = "button3";
-            this.button3.Size = new System.Drawing.Size(296, 23);
-            this.button3.TabIndex = 23;
-            this.button3.Text = "Гамильтоновы маршруты и циклы";
-            this.button3.UseVisualStyleBackColor = true;
-            this.button3.Click += new System.EventHandler(this.button3_Click);
-            // 
-            // button4
-            // 
-            this.button4.Location = new System.Drawing.Point(159, 230);
-            this.button4.Name = "button4";
-            this.button4.Size = new System.Drawing.Size(143, 23);
-            this.button4.TabIndex = 24;
-            this.button4.Text = "Кратчайшие пути";
-            this.button4.UseVisualStyleBackColor = true;
-            this.button4.Click += new System.EventHandler(this.button4_Click_1);
-            // 
-            // btnCentre
-            // 
-            this.btnCentre.Location = new System.Drawing.Point(156, 316);
-            this.btnCentre.Name = "btnCentre";
-            this.btnCentre.Size = new System.Drawing.Size(149, 23);
-            this.btnCentre.TabIndex = 25;
-            this.btnCentre.Text = "Центр графа";
-            this.btnCentre.UseVisualStyleBackColor = true;
-            this.btnCentre.Click += new System.EventHandler(this.btnCentre_Click);
             // 
             // Main
             // 

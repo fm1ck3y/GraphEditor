@@ -138,11 +138,12 @@ namespace Graph
             {
                 g.DrawLine(pen, edge.v1.x + R / 2, edge.v1.y + R / 2, edge.v2.x + R / 2, edge.v2.y + R / 2);
             }
-            if (value != null || edge.cost != 0)
+            if (value != "" || edge.cost != 0)
             {
                 Color colorCost = Color.Red;
-                if (value != null) colorCost = Color.Blue;
-                value = edge.cost.ToString();
+                if (value != "")
+                    colorCost = Color.Blue;
+                else value = edge.cost.ToString();
                 Font drawFont = new Font("Century Ghotic", 14);
                 SolidBrush drawBrush = new SolidBrush(colorCost);
                 StringFormat sf = new StringFormat();
@@ -152,7 +153,7 @@ namespace Graph
             }
         }
 
-        private void DrawGraph(List<Vertex> way = null, Vertex selectVertex = null, Graph mainGraph = null, bool MST = false)
+        private void DrawGraph(List<Vertex> way = null, Vertex selectVertex = null, Graph mainGraph = null, bool MST = false, bool Hamilton = false)
         {
             if (mainGraph == null) mainGraph = this.mainGraph;
             g = Graphics.FromImage(bitmap);
@@ -163,14 +164,23 @@ namespace Graph
                 edges_way = GenerateEdges(way);
             else
                 way = new List<Vertex>();
-            foreach (var e in mainGraph.edges)
-                if (edges_way.FirstOrDefault(t => t.v1 == e.v1 && t.v2 == e.v2 || t.v1 == e.v2 && t.v2 == e.v1) != null)
+            int k = 1;
+            if (Hamilton)
+            {
+                foreach (var e in mainGraph.edges)
+                    DrawEdge(e, Color.Green, k++.ToString(), MST);
+            }
+            else
+                foreach (var e in mainGraph.edges)
                 {
-                    if (edges_way.IndexOf(e) != -1)
-                        DrawEdge(e, Color.Green, "", MST);
+                    if (edges_way.FirstOrDefault(t => t.v1 == e.v1 && t.v2 == e.v2 || t.v1 == e.v2 && t.v2 == e.v1) != null)
+                    {
+                        if (edges_way.IndexOf(e) != -1)
+                            DrawEdge(e, Color.Green, k++.ToString(), MST);
+                    }
+                    else
+                        DrawEdge(e, _ColorEdge, "", MST);
                 }
-                else
-                    DrawEdge(e, _ColorEdge, null, MST);
             foreach (var v in mainGraph.vertexs)
                 if (way.Contains(v))
                     DrawVertex(v, Color.Black, Color.Black, Color.Red);
@@ -473,12 +483,18 @@ namespace Graph
 
         private void button3_Click(object sender, EventArgs e)
         {
-            var graphs = mainGraph.HamiltonianPath();
+            List<Graph> graphs = mainGraph.HamiltonianCycles();
+            if (graphs.Count == 0)
+            {
+                MessageBox.Show("Ошибка. В данном графе нет Гамильтоновых циклов!", "Ошибка", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                return;
+            }
             foreach (var g in graphs)
             {
-                DrawGraph(g.vertexs, null, g);
+                DrawGraph(g.vertexs, null, g,false,true);
                 Task.Delay(2000).GetAwaiter().GetResult();
             }
+            DrawGraph();
         }
 
         private void button4_Click_1(object sender, EventArgs e)

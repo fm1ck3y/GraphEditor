@@ -132,18 +132,52 @@ namespace Graph
             return markedMatrix;
         }
 
-        public static  int[,] AuxiliaryMatrix(int [,] markedMatrix)
+        public static int[,] AuxiliaryMatrix(int[,] markedMatrix)
         {
             int[,] auxiliaryMatrix = new int[markedMatrix.GetLength(0), markedMatrix.GetLength(0)];
             for (int i = 0; i < markedMatrix.GetLength(0); i++)
             {
                 for (int j = 0; j < markedMatrix.GetLength(0); j++)
                 {
-                    if (markedMatrix[i, j] != 0) auxiliaryMatrix[i, j] = int.Parse(markedMatrix[i, j].ToString().Remove(0,1));
+                    if (markedMatrix[i, j] != 0) auxiliaryMatrix[i, j] = int.Parse(markedMatrix[i, j].ToString().Remove(0, 1));
                     else auxiliaryMatrix[i, j] = 0;
                 }
             }
             return auxiliaryMatrix;
+        }
+
+        public static List<string>[,] ConcatenationMatrix(List<string>[,] matrixA, int[,] matrixB)
+        {
+            List<string>[,] concatMatrix = new List<string>[matrixA.GetLength(0), matrixB.GetLength(0)];
+            for (var i = 0; i < matrixA.GetLength(0); i++)
+            {
+                for (var j = 0; j < matrixB.GetLength(1); j++)
+                {
+                    List<string> tmp = new List<string>();
+                    for (int k = 0; k < matrixA.GetLength(1); k++)
+                        if (matrixA[i, k][0] != "0")
+                            for (int y = 0; y < matrixA[i, k].Count; y++)
+                                if (matrixB[k, j] != 0)
+                                    tmp.Add((matrixA[i, k][y].ToString() + matrixB[k, j].ToString()));
+                    if (tmp.Count == 0)
+                        tmp.Add("0");
+                    concatMatrix[i, j] = tmp;
+                }
+            }
+            return concatMatrix;
+        }
+
+        public static List<string>[,] IntToListString(int[,] matrix)
+        {
+            List<string>[,] newMatrix = new List<string>[matrix.GetLength(0), matrix.GetLength(1)];
+            for (int i = 0; i < matrix.GetLength(0); i++)
+            {
+                for (int j = 0; j < matrix.GetLength(1); j++)
+                {
+                    newMatrix[i, j] = new List<string> { matrix[i, j].ToString() };
+                }
+            }
+            return newMatrix;
         }
     }
 }

@@ -488,33 +488,50 @@ namespace Graph
             return matrix;
         }
 
-        
-        public List<Graph> HamiltonianPath()
+
+        public List<Graph> HamiltonianCycles()
         {
+            List<Graph> hamiltonCycles = new List<Graph>();
             var markedMatrix = MatrixExt.MarkedMatrix(CreateAdjacencyMatrix());
             var auxiliaryMatrix = MatrixExt.AuxiliaryMatrix(markedMatrix);
-            var HamiltoncycleMatrix = MatrixExt.MatrixMultiplication(MatrixExt.PowMatrix(markedMatrix, _vertexs.Count - 1), auxiliaryMatrix);
-            var HamiltonPathMatrix = MatrixExt.MatrixMultiplication(MatrixExt.PowMatrix(markedMatrix, _vertexs.Count - 2), auxiliaryMatrix);
-            List<Graph> hamiltonCycles = new List<Graph>();
+            var newMarkedMatrix = MatrixExt.IntToListString(markedMatrix);
+            List<string>[,] HamiltoncycleMatrix = newMarkedMatrix;
+            for (int i = 0; i < _vertexs.Count - 1; i++)
+            {
+                HamiltoncycleMatrix = MatrixExt.ConcatenationMatrix(HamiltoncycleMatrix, auxiliaryMatrix);
+            }
+            for (int i = 0; i < HamiltoncycleMatrix.GetLength(0); i++)
+            {
+                for (int j = 0; j < HamiltoncycleMatrix.GetLength(1); j++)
+                {
+                    var tmp = new List<string>();
+                    for (int k = 0; k < HamiltoncycleMatrix[i, j].Count; k++)
+                    {
+                        int count = HamiltoncycleMatrix[i, j][k].ToString().Distinct().ToList().Count;
+                        if (count == _vertexs.Count && HamiltoncycleMatrix[i, j][k][0] == HamiltoncycleMatrix[i, j][k][HamiltoncycleMatrix[i, j][k].Length - 1])
+                            tmp.Add(HamiltoncycleMatrix[i, j][k]);
+                    }
+                    HamiltoncycleMatrix[i, j] = tmp;
+                }
+            }
             int u = 0;
             for (int i = 0; i < HamiltoncycleMatrix.GetLength(0); i++)
             {
-                for (int j = 0; j < HamiltoncycleMatrix.GetLength(0); j++)
+                if (HamiltoncycleMatrix[i, i][0] != "0")
                 {
-                    if (HamiltoncycleMatrix[i,j] != 0)
+                    hamiltonCycles.Add(new Graph());
+                    int index_i = int.Parse(HamiltoncycleMatrix[i, i][0][0].ToString()) - 1;
+                    hamiltonCycles[u].AddVertex(_vertexs[index_i]);
+                    for (int k = 0; k < HamiltoncycleMatrix[i, i][0].Length - 1; k++)
                     {
-                        hamiltonCycles.Add(new Graph());
-                        int index_i = int.Parse(HamiltoncycleMatrix[i, j].ToString()[0].ToString())-1;
-                        hamiltonCycles[u].AddVertex(_vertexs[index_i]);
-                        for (int k = 0; k < HamiltoncycleMatrix[i,j].ToString().Length-1; k++)
-                        {
-                            index_i = int.Parse(HamiltoncycleMatrix[i, j].ToString()[k].ToString())-1;
-                            int index_j = int.Parse(HamiltoncycleMatrix[i, j].ToString()[k+1].ToString())-1;
-                            hamiltonCycles[u].AddVertex(_vertexs[index_j]);
-                            hamiltonCycles[u].AddEdge(new Edge(_vertexs[index_i], _vertexs[index_j], 1));
-                        }
+                        index_i = int.Parse(HamiltoncycleMatrix[i, i][0][k].ToString()) - 1;
+                        int index_j = int.Parse(HamiltoncycleMatrix[i, i][0][k + 1].ToString()) - 1;
+                        hamiltonCycles[u].AddVertex(_vertexs[index_j]);
+                        var _e = _edges.FirstOrDefault(t => t.v1 == _vertexs[index_i] && t.v2 == _vertexs[index_j]);
+                        hamiltonCycles[u].AddEdge(_e);
                     }
                 }
+                u++;
             }
             return hamiltonCycles;
         }
@@ -530,7 +547,7 @@ namespace Graph
             int min = vector[0];
             for (int i = 0; i < vector.Length; i++)
             {
-                if(vector[i] < min)
+                if (vector[i] < min)
                 {
                     index = i;
                     min = vector[i];
