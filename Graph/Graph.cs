@@ -519,22 +519,25 @@ namespace Graph
             // преобразование из матрицы смежности в Graph
             for (int i = 0; i < HamiltoncycleMatrix.GetLength(0); i++)
             {
-                if (HamiltoncycleMatrix[i, i][0] != "0") // пробегаемся по диагонали, так как циклы будут только по диагонали в матрице
+                for (int j = 0; j < HamiltoncycleMatrix[i, i].Count; j++)
                 {
-                    hamiltonCycles.Add(new Graph()); // создаём новый цикл
-                    int index_i = int.Parse(HamiltoncycleMatrix[i, i][0][0].ToString()) - 1; // находим индекс вершины
-                    hamiltonCycles[u].AddVertex(_vertexs[index_i]);  // добавляем в граф
-                    for (int k = 0; k < HamiltoncycleMatrix[i, i][0].Length - 1; k++) // делаем это еще N-1 раз
+                    if (HamiltoncycleMatrix[i, i][j] != "0") // пробегаемся по диагонали, так как циклы будут только по диагонали в матрице
                     {
-                        index_i = int.Parse(HamiltoncycleMatrix[i, i][0][k].ToString()) - 1; // находим индекс вершины 
-                        int index_j = int.Parse(HamiltoncycleMatrix[i, i][0][k + 1].ToString()) - 1; // находим индекс следующей вершины
-                        // берётся сразу по 2 вершины, для того, чтобы создавать между ними ребро 
-                        hamiltonCycles[u].AddVertex(_vertexs[index_j]); // добавляем в граф
-                        var _e = _edges.FirstOrDefault(t => t.v1 == _vertexs[index_i] && t.v2 == _vertexs[index_j]); // создаём для вершин ребро
-                        hamiltonCycles[u].AddEdge(_e); // добавляем его в граф
+                        hamiltonCycles.Add(new Graph()); // создаём новый цикл
+                        int index_i = int.Parse(HamiltoncycleMatrix[i, i][j][0].ToString()) - 1; // находим индекс вершины
+                        hamiltonCycles[u].AddVertex(_vertexs[index_i]);  // добавляем в граф
+                        for (int k = 0; k < HamiltoncycleMatrix[i, i][j].Length - 1; k++) // делаем это еще N-1 раз
+                        {
+                            index_i = int.Parse(HamiltoncycleMatrix[i, i][j][k].ToString()) - 1; // находим индекс вершины 
+                            int index_j = int.Parse(HamiltoncycleMatrix[i, i][j][k + 1].ToString()) - 1; // находим индекс следующей вершины
+                                                                                                         // берётся сразу по 2 вершины, для того, чтобы создавать между ними ребро 
+                            hamiltonCycles[u].AddVertex(_vertexs[index_j]); // добавляем в граф
+                            var _e = _edges.FirstOrDefault(t => t.v1 == _vertexs[index_i] && t.v2 == _vertexs[index_j]); // создаём для вершин ребро
+                            hamiltonCycles[u].AddEdge(_e); // добавляем его в граф
+                        }
                     }
+                    u++; // увеличиваем счетчик циклов
                 }
-                u++; // увеличиваем счетчик циклов
             }
             return hamiltonCycles;
         }
