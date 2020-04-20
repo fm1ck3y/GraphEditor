@@ -491,15 +491,14 @@ namespace Graph
 
         public List<Graph> HamiltonianCycles()
         {
-            List<Graph> hamiltonCycles = new List<Graph>();
-            var markedMatrix = MatrixExt.MarkedMatrix(CreateAdjacencyMatrix());
-            var auxiliaryMatrix = MatrixExt.AuxiliaryMatrix(markedMatrix);
-            var newMarkedMatrix = MatrixExt.IntToListString(markedMatrix);
-            List<string>[,] HamiltoncycleMatrix = newMarkedMatrix;
-            for (int i = 0; i < _vertexs.Count - 1; i++)
-            {
+            List<Graph> hamiltonCycles = new List<Graph>(); // создаём список циклов, который будем заполнять 
+            var markedMatrix = MatrixExt.MarkedMatrix(CreateAdjacencyMatrix()); // означенная матрица
+            var auxiliaryMatrix = MatrixExt.AuxiliaryMatrix(markedMatrix); // вспомогательная матрица
+            var newMarkedMatrix = MatrixExt.IntToListString(markedMatrix); // приведенная к типу string означенная матрица
+            List<string>[,] HamiltoncycleMatrix = newMarkedMatrix; // создаём переменную для итоговой матрицы
+            for (int i = 0; i < _vertexs.Count - 1; i++) // совершаем конкатенцию N раз, где N - количество вершин в графе 
                 HamiltoncycleMatrix = MatrixExt.ConcatenationMatrix(HamiltoncycleMatrix, auxiliaryMatrix);
-            }
+            // фильтрация Гамильтоновых циклов ( иначе говоря, удаляем пути, которые не являются Гамильтоновыми циклами)
             for (int i = 0; i < HamiltoncycleMatrix.GetLength(0); i++)
             {
                 for (int j = 0; j < HamiltoncycleMatrix.GetLength(1); j++)
@@ -507,44 +506,86 @@ namespace Graph
                     var tmp = new List<string>();
                     for (int k = 0; k < HamiltoncycleMatrix[i, j].Count; k++)
                     {
-                        int count = HamiltoncycleMatrix[i, j][k].ToString().Distinct().ToList().Count;
+                        int count = HamiltoncycleMatrix[i, j][k].ToString().Distinct().ToList().Count; // количество уникальных цифр (вершин)
+                        // если количество уникальных (неповторяющихся) вершин + 1 == количеству вершин и первая и последния вершина в пути равны (является циклом)
                         if (count == _vertexs.Count && HamiltoncycleMatrix[i, j][k][0] == HamiltoncycleMatrix[i, j][k][HamiltoncycleMatrix[i, j][k].Length - 1])
                             tmp.Add(HamiltoncycleMatrix[i, j][k]);
                     }
-                    HamiltoncycleMatrix[i, j] = tmp;
+                    HamiltoncycleMatrix[i, j] = tmp;// добавляем в итоговую матрицу
                 }
             }
-            int u = 0;
+            int u = 0; // переменная для нумерации циклов
+
+            // преобразование из матрицы смежности в Graph
             for (int i = 0; i < HamiltoncycleMatrix.GetLength(0); i++)
             {
-                if (HamiltoncycleMatrix[i, i][0] != "0")
+                if (HamiltoncycleMatrix[i, i][0] != "0") // пробегаемся по диагонали, так как циклы будут только по диагонали в матрице
                 {
-                    hamiltonCycles.Add(new Graph());
-                    int index_i = int.Parse(HamiltoncycleMatrix[i, i][0][0].ToString()) - 1;
-                    hamiltonCycles[u].AddVertex(_vertexs[index_i]);
-                    for (int k = 0; k < HamiltoncycleMatrix[i, i][0].Length - 1; k++)
+                    hamiltonCycles.Add(new Graph()); // создаём новый цикл
+                    int index_i = int.Parse(HamiltoncycleMatrix[i, i][0][0].ToString()) - 1; // находим индекс вершины
+                    hamiltonCycles[u].AddVertex(_vertexs[index_i]);  // добавляем в граф
+                    for (int k = 0; k < HamiltoncycleMatrix[i, i][0].Length - 1; k++) // делаем это еще N-1 раз
                     {
-                        index_i = int.Parse(HamiltoncycleMatrix[i, i][0][k].ToString()) - 1;
-                        int index_j = int.Parse(HamiltoncycleMatrix[i, i][0][k + 1].ToString()) - 1;
-                        hamiltonCycles[u].AddVertex(_vertexs[index_j]);
-                        var _e = _edges.FirstOrDefault(t => t.v1 == _vertexs[index_i] && t.v2 == _vertexs[index_j]);
-                        hamiltonCycles[u].AddEdge(_e);
+                        index_i = int.Parse(HamiltoncycleMatrix[i, i][0][k].ToString()) - 1; // находим индекс вершины 
+                        int index_j = int.Parse(HamiltoncycleMatrix[i, i][0][k + 1].ToString()) - 1; // находим индекс следующей вершины
+                        // берётся сразу по 2 вершины, для того, чтобы создавать между ними ребро 
+                        hamiltonCycles[u].AddVertex(_vertexs[index_j]); // добавляем в граф
+                        var _e = _edges.FirstOrDefault(t => t.v1 == _vertexs[index_i] && t.v2 == _vertexs[index_j]); // создаём для вершин ребро
+                        hamiltonCycles[u].AddEdge(_e); // добавляем его в граф
                     }
                 }
-                u++;
+                u++; // увеличиваем счетчик циклов
             }
             return hamiltonCycles;
         }
 
         public Vertex CentreVertexInGraph()
         {
-            var matrix = GetAllDistancesDijkstra();
-            int[] vector = new int[matrix.GetLength(0)];
+            var matrix = GetAllDistancesDijkstra(); // получаем матрицу кратчайшех путей по Алгоритму Дейкстры
+            int[] vector = new int[matrix.GetLength(0)]; // создаём вектор наибольших чисел в строке
             for (int i = 0; i < matrix.GetLength(0); i++)
                 for (int j = 0; j < matrix.GetLength(0); j++)
-                    if (matrix[i, j] > vector[i]) vector[i] = matrix[i, j];
+                    if (matrix[i, j] > vector[i]) vector[i] = matrix[i, j]; // находим наибольшее число в строке
             int index = 0;
-            int min = vector[0];
+            int min = vector[0]; // переменная для минимального из наибольших чисел
+            // тут просто находим минимальное из наибольших чисел и его индекс
+            // его индекс и будет вершиной
+            for (int i = 0; i < vector.Length; i++)
+            {
+                if (vector[i] < min)
+                {
+                    index = i;
+                    min = vector[i];
+                }
+            }
+            return _vertexs[index];
+        }
+
+        public Vertex MainCentreInGraph(string filename)
+        {
+            var matrix = GetAllDistancesDijkstra(); // получаем матрицу кратчайшех путей по Алгоритму Дейкстры
+            var mainMatrix = CreateAdjacencyMatrix();
+            int[,] newMatrix = new int[_edges.Count, _vertexs.Count];
+            FileStream fs = new FileStream(filename, FileMode.Create, FileAccess.Write);
+            using (StreamWriter sw = new StreamWriter(fs))
+                for (int i = 0; i < _edges.Count; i++)
+                {
+                    sw.Write(_vertexs.IndexOf(_edges[i].v1).ToString() + "," + _vertexs.IndexOf(_edges[i].v2).ToString() + " - ");
+                    for (int j = 0; j < _vertexs.Count; j++)
+                    {
+                        newMatrix[i, j] = ((mainMatrix[j, _vertexs.IndexOf(_edges[i].v1)] + mainMatrix[j, _vertexs.IndexOf(_edges[i].v2)] + matrix[_vertexs.IndexOf(_edges[i].v1), _vertexs.IndexOf(_edges[i].v2)]) / 2);
+                        sw.Write(newMatrix[i, j].ToString() + " ");
+                    }
+                    sw.WriteLine();
+                }
+            int[] vector = new int[newMatrix.GetLength(1)];
+            for (int i = 0; i < newMatrix.GetLength(0); i++)
+                for (int j = 0; j < newMatrix.GetLength(1); j++)
+                    if (newMatrix[i, j] > vector[j]) vector[j] = newMatrix[i, j]; // находим наибольшее число в строке
+            int index = 0;
+            int min = vector[0]; // переменная для минимального из наибольших чисел
+            // тут просто находим минимальное из наибольших чисел и его индекс
+            // его индекс и будет вершиной
             for (int i = 0; i < vector.Length; i++)
             {
                 if (vector[i] < min)

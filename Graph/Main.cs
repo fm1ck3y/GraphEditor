@@ -526,6 +526,32 @@ namespace Graph
             DrawGraph(centres);
         }
 
+        private void button5_Click(object sender, EventArgs e)
+        {
+            if (SVDialog.ShowDialog() == DialogResult.Cancel)
+                return;
+            var matrix = mainGraph.CreateAdjacencyMatrix();
+            FileStream fs = new FileStream(SVDialog.FileName, FileMode.Create, FileAccess.Write);
+            using (StreamWriter sw = new StreamWriter(fs))
+                for (int i = 0; i < matrix.GetLength(0); i++)
+                {
+                    for (int j = 0; j < matrix.GetLongLength(1); j++)
+                        sw.Write(matrix[i,j].ToString() + ' ');
+                    sw.WriteLine();
+                }
+                
+        }
+
+        private void button6_Click(object sender, EventArgs e)
+        {
+            if (SVDialog.ShowDialog() == DialogResult.Cancel)
+                return;
+            var V = mainGraph.MainCentreInGraph(SVDialog.FileName);
+            List<Vertex> centres = new List<Vertex>();
+            centres.Add(V);
+            DrawGraph(centres);
+        }
+
         private void btnChangeColorVertex_Click(object sender, EventArgs e)
         {
             if (colorVertex.ShowDialog() == DialogResult.OK)

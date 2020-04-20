@@ -43,7 +43,7 @@ namespace Graph
             this.btnCreateVert = new System.Windows.Forms.Button();
             this.vertexBindingSource = new System.Windows.Forms.BindingSource(this.components);
             this.rightPanel = new System.Windows.Forms.Panel();
-            this.btnCentre = new System.Windows.Forms.Button();
+            this.btnMainCentre = new System.Windows.Forms.Button();
             this.button4 = new System.Windows.Forms.Button();
             this.button3 = new System.Windows.Forms.Button();
             this.btnDownload = new System.Windows.Forms.Button();
@@ -72,6 +72,8 @@ namespace Graph
             this.colorVertex = new System.Windows.Forms.ColorDialog();
             this.OFDialog = new System.Windows.Forms.OpenFileDialog();
             this.SVDialog = new System.Windows.Forms.SaveFileDialog();
+            this.button5 = new System.Windows.Forms.Button();
+            this.btnCentre = new System.Windows.Forms.Button();
             this.pnlTools.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.vertexBindingSource)).BeginInit();
             this.rightPanel.SuspendLayout();
@@ -95,7 +97,7 @@ namespace Graph
             this.pnlTools.Dock = System.Windows.Forms.DockStyle.Left;
             this.pnlTools.Location = new System.Drawing.Point(0, 0);
             this.pnlTools.Name = "pnlTools";
-            this.pnlTools.Size = new System.Drawing.Size(51, 544);
+            this.pnlTools.Size = new System.Drawing.Size(51, 579);
             this.pnlTools.TabIndex = 1;
             // 
             // btnCreateEdge
@@ -181,6 +183,8 @@ namespace Graph
             this.rightPanel.BackColor = System.Drawing.SystemColors.Control;
             this.rightPanel.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
             this.rightPanel.Controls.Add(this.btnCentre);
+            this.rightPanel.Controls.Add(this.button5);
+            this.rightPanel.Controls.Add(this.btnMainCentre);
             this.rightPanel.Controls.Add(this.button4);
             this.rightPanel.Controls.Add(this.button3);
             this.rightPanel.Controls.Add(this.btnDownload);
@@ -205,25 +209,25 @@ namespace Graph
             this.rightPanel.Controls.Add(this.dgvMatrix);
             this.rightPanel.Controls.Add(this.btnWave);
             this.rightPanel.Dock = System.Windows.Forms.DockStyle.Right;
-            this.rightPanel.Location = new System.Drawing.Point(614, 0);
+            this.rightPanel.Location = new System.Drawing.Point(620, 0);
             this.rightPanel.Name = "rightPanel";
-            this.rightPanel.Size = new System.Drawing.Size(315, 544);
+            this.rightPanel.Size = new System.Drawing.Size(315, 579);
             this.rightPanel.TabIndex = 0;
             this.rightPanel.Paint += new System.Windows.Forms.PaintEventHandler(this.rightPanel_Paint);
             // 
-            // btnCentre
+            // btnMainCentre
             // 
-            this.btnCentre.Location = new System.Drawing.Point(156, 316);
-            this.btnCentre.Name = "btnCentre";
-            this.btnCentre.Size = new System.Drawing.Size(149, 23);
-            this.btnCentre.TabIndex = 25;
-            this.btnCentre.Text = "Центр графа";
-            this.btnCentre.UseVisualStyleBackColor = true;
-            this.btnCentre.Click += new System.EventHandler(this.btnCentre_Click);
+            this.btnMainCentre.Location = new System.Drawing.Point(158, 347);
+            this.btnMainCentre.Name = "btnMainCentre";
+            this.btnMainCentre.Size = new System.Drawing.Size(147, 23);
+            this.btnMainCentre.TabIndex = 25;
+            this.btnMainCentre.Text = "Центр графа";
+            this.btnMainCentre.UseVisualStyleBackColor = true;
+            this.btnMainCentre.Click += new System.EventHandler(this.btnCentre_Click);
             // 
             // button4
             // 
-            this.button4.Location = new System.Drawing.Point(159, 230);
+            this.button4.Location = new System.Drawing.Point(159, 261);
             this.button4.Name = "button4";
             this.button4.Size = new System.Drawing.Size(143, 23);
             this.button4.TabIndex = 24;
@@ -233,7 +237,7 @@ namespace Graph
             // 
             // button3
             // 
-            this.button3.Location = new System.Drawing.Point(9, 378);
+            this.button3.Location = new System.Drawing.Point(9, 409);
             this.button3.Name = "button3";
             this.button3.Size = new System.Drawing.Size(296, 23);
             this.button3.TabIndex = 23;
@@ -243,7 +247,7 @@ namespace Graph
             // 
             // btnDownload
             // 
-            this.btnDownload.Location = new System.Drawing.Point(158, 408);
+            this.btnDownload.Location = new System.Drawing.Point(158, 439);
             this.btnDownload.Name = "btnDownload";
             this.btnDownload.Size = new System.Drawing.Size(147, 23);
             this.btnDownload.TabIndex = 22;
@@ -253,7 +257,7 @@ namespace Graph
             // 
             // btnSave
             // 
-            this.btnSave.Location = new System.Drawing.Point(9, 408);
+            this.btnSave.Location = new System.Drawing.Point(9, 439);
             this.btnSave.Name = "btnSave";
             this.btnSave.Size = new System.Drawing.Size(147, 23);
             this.btnSave.TabIndex = 21;
@@ -263,7 +267,7 @@ namespace Graph
             // 
             // btnCyclomatic
             // 
-            this.btnCyclomatic.Location = new System.Drawing.Point(9, 345);
+            this.btnCyclomatic.Location = new System.Drawing.Point(9, 376);
             this.btnCyclomatic.Name = "btnCyclomatic";
             this.btnCyclomatic.Size = new System.Drawing.Size(296, 23);
             this.btnCyclomatic.TabIndex = 20;
@@ -274,7 +278,7 @@ namespace Graph
             // 
             // btnEulerCycles
             // 
-            this.btnEulerCycles.Location = new System.Drawing.Point(7, 316);
+            this.btnEulerCycles.Location = new System.Drawing.Point(7, 347);
             this.btnEulerCycles.Name = "btnEulerCycles";
             this.btnEulerCycles.Size = new System.Drawing.Size(149, 23);
             this.btnEulerCycles.TabIndex = 19;
@@ -284,7 +288,7 @@ namespace Graph
             // 
             // btnMST
             // 
-            this.btnMST.Location = new System.Drawing.Point(7, 287);
+            this.btnMST.Location = new System.Drawing.Point(7, 318);
             this.btnMST.Name = "btnMST";
             this.btnMST.Size = new System.Drawing.Size(298, 23);
             this.btnMST.TabIndex = 18;
@@ -296,7 +300,7 @@ namespace Graph
             // 
             this.label4.AutoSize = true;
             this.label4.Font = new System.Drawing.Font("Courier New", 9.75F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.label4.Location = new System.Drawing.Point(4, 445);
+            this.label4.Location = new System.Drawing.Point(4, 476);
             this.label4.Name = "label4";
             this.label4.Size = new System.Drawing.Size(120, 16);
             this.label4.TabIndex = 17;
@@ -304,7 +308,7 @@ namespace Graph
             // 
             // trackSizeVertex
             // 
-            this.trackSizeVertex.Location = new System.Drawing.Point(124, 437);
+            this.trackSizeVertex.Location = new System.Drawing.Point(124, 468);
             this.trackSizeVertex.Maximum = 100;
             this.trackSizeVertex.Minimum = 10;
             this.trackSizeVertex.Name = "trackSizeVertex";
@@ -316,7 +320,7 @@ namespace Graph
             // colorEdge
             // 
             this.colorEdge.BackColor = System.Drawing.Color.Gray;
-            this.colorEdge.Location = new System.Drawing.Point(263, 485);
+            this.colorEdge.Location = new System.Drawing.Point(263, 516);
             this.colorEdge.Name = "colorEdge";
             this.colorEdge.Size = new System.Drawing.Size(38, 23);
             this.colorEdge.TabIndex = 14;
@@ -324,7 +328,7 @@ namespace Graph
             // 
             // button1
             // 
-            this.button1.Location = new System.Drawing.Point(159, 484);
+            this.button1.Location = new System.Drawing.Point(159, 515);
             this.button1.Name = "button1";
             this.button1.Size = new System.Drawing.Size(98, 23);
             this.button1.TabIndex = 13;
@@ -335,7 +339,7 @@ namespace Graph
             // colorV
             // 
             this.colorV.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(255)))), ((int)(((byte)(128)))), ((int)(((byte)(0)))));
-            this.colorV.Location = new System.Drawing.Point(108, 484);
+            this.colorV.Location = new System.Drawing.Point(108, 515);
             this.colorV.Name = "colorV";
             this.colorV.Size = new System.Drawing.Size(38, 23);
             this.colorV.TabIndex = 12;
@@ -343,7 +347,7 @@ namespace Graph
             // 
             // btnChangeColorVertex
             // 
-            this.btnChangeColorVertex.Location = new System.Drawing.Point(4, 484);
+            this.btnChangeColorVertex.Location = new System.Drawing.Point(4, 515);
             this.btnChangeColorVertex.Name = "btnChangeColorVertex";
             this.btnChangeColorVertex.Size = new System.Drawing.Size(98, 23);
             this.btnChangeColorVertex.TabIndex = 11;
@@ -353,7 +357,7 @@ namespace Graph
             // 
             // btnStandart
             // 
-            this.btnStandart.Location = new System.Drawing.Point(3, 513);
+            this.btnStandart.Location = new System.Drawing.Point(3, 544);
             this.btnStandart.Name = "btnStandart";
             this.btnStandart.Size = new System.Drawing.Size(299, 23);
             this.btnStandart.TabIndex = 10;
@@ -363,7 +367,7 @@ namespace Graph
             // 
             // btnStrong
             // 
-            this.btnStrong.Location = new System.Drawing.Point(6, 258);
+            this.btnStrong.Location = new System.Drawing.Point(6, 289);
             this.btnStrong.Name = "btnStrong";
             this.btnStrong.Size = new System.Drawing.Size(299, 23);
             this.btnStrong.TabIndex = 9;
@@ -374,7 +378,7 @@ namespace Graph
             // lblWay
             // 
             this.lblWay.AutoSize = true;
-            this.lblWay.Location = new System.Drawing.Point(6, 234);
+            this.lblWay.Location = new System.Drawing.Point(6, 265);
             this.lblWay.Name = "lblWay";
             this.lblWay.Size = new System.Drawing.Size(96, 13);
             this.lblWay.TabIndex = 8;
@@ -382,7 +386,7 @@ namespace Graph
             // 
             // button2
             // 
-            this.button2.Location = new System.Drawing.Point(159, 204);
+            this.button2.Location = new System.Drawing.Point(159, 235);
             this.button2.Name = "button2";
             this.button2.Size = new System.Drawing.Size(143, 23);
             this.button2.TabIndex = 7;
@@ -393,7 +397,7 @@ namespace Graph
             // label2
             // 
             this.label2.AutoSize = true;
-            this.label2.Location = new System.Drawing.Point(156, 180);
+            this.label2.Location = new System.Drawing.Point(156, 211);
             this.label2.Name = "label2";
             this.label2.Size = new System.Drawing.Size(19, 13);
             this.label2.TabIndex = 6;
@@ -402,7 +406,7 @@ namespace Graph
             // cbEnd
             // 
             this.cbEnd.FormattingEnabled = true;
-            this.cbEnd.Location = new System.Drawing.Point(181, 177);
+            this.cbEnd.Location = new System.Drawing.Point(181, 208);
             this.cbEnd.Name = "cbEnd";
             this.cbEnd.Size = new System.Drawing.Size(56, 21);
             this.cbEnd.TabIndex = 5;
@@ -410,7 +414,7 @@ namespace Graph
             // cbSelectStart
             // 
             this.cbSelectStart.FormattingEnabled = true;
-            this.cbSelectStart.Location = new System.Drawing.Point(94, 177);
+            this.cbSelectStart.Location = new System.Drawing.Point(94, 208);
             this.cbSelectStart.Name = "cbSelectStart";
             this.cbSelectStart.Size = new System.Drawing.Size(56, 21);
             this.cbSelectStart.TabIndex = 3;
@@ -418,7 +422,7 @@ namespace Graph
             // label1
             // 
             this.label1.AutoSize = true;
-            this.label1.Location = new System.Drawing.Point(3, 180);
+            this.label1.Location = new System.Drawing.Point(3, 211);
             this.label1.Name = "label1";
             this.label1.Size = new System.Drawing.Size(85, 13);
             this.label1.TabIndex = 2;
@@ -453,7 +457,7 @@ namespace Graph
             // 
             // btnWave
             // 
-            this.btnWave.Location = new System.Drawing.Point(3, 204);
+            this.btnWave.Location = new System.Drawing.Point(3, 235);
             this.btnWave.Name = "btnWave";
             this.btnWave.Size = new System.Drawing.Size(143, 23);
             this.btnWave.TabIndex = 0;
@@ -470,7 +474,7 @@ namespace Graph
             this.graphicsPanel.Dock = System.Windows.Forms.DockStyle.Fill;
             this.graphicsPanel.Location = new System.Drawing.Point(51, 0);
             this.graphicsPanel.Name = "graphicsPanel";
-            this.graphicsPanel.Size = new System.Drawing.Size(929, 544);
+            this.graphicsPanel.Size = new System.Drawing.Size(935, 579);
             this.graphicsPanel.TabIndex = 2;
             this.graphicsPanel.Paint += new System.Windows.Forms.PaintEventHandler(this.graphicsPanel_Paint);
             this.graphicsPanel.MouseClick += new System.Windows.Forms.MouseEventHandler(this.graphicsPanel_MouseClick);
@@ -492,11 +496,31 @@ namespace Graph
             // 
             this.OFDialog.FileName = "OFDialog";
             // 
+            // button5
+            // 
+            this.button5.Location = new System.Drawing.Point(4, 176);
+            this.button5.Name = "button5";
+            this.button5.Size = new System.Drawing.Size(143, 23);
+            this.button5.TabIndex = 26;
+            this.button5.Text = "Выгрузить матрицу";
+            this.button5.UseVisualStyleBackColor = true;
+            this.button5.Click += new System.EventHandler(this.button5_Click);
+            // 
+            // btnCentre
+            // 
+            this.btnCentre.Location = new System.Drawing.Point(153, 176);
+            this.btnCentre.Name = "btnCentre";
+            this.btnCentre.Size = new System.Drawing.Size(149, 23);
+            this.btnCentre.TabIndex = 27;
+            this.btnCentre.Text = "Главный центр графа";
+            this.btnCentre.UseVisualStyleBackColor = true;
+            this.btnCentre.Click += new System.EventHandler(this.button6_Click);
+            // 
             // Main
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(980, 544);
+            this.ClientSize = new System.Drawing.Size(986, 579);
             this.Controls.Add(this.graphicsPanel);
             this.Controls.Add(this.pnlTools);
             this.Name = "Main";
@@ -558,6 +582,8 @@ namespace Graph
         private SaveFileDialog SVDialog;
         private Button button3;
         private Button button4;
+        private Button btnMainCentre;
+        private Button button5;
         private Button btnCentre;
     }
 }

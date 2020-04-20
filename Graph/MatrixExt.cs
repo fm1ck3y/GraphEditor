@@ -146,25 +146,29 @@ namespace Graph
             return auxiliaryMatrix;
         }
 
-        public static List<string>[,] ConcatenationMatrix(List<string>[,] matrixA, int[,] matrixB)
+        // конкатенация матрицы
+        // 2 входные матрицы, одна выходная
+        public static List<string>[,] ConcatenationMatrix(List<string>[,] matrixA, int[,] matrixB) 
         {
-            List<string>[,] concatMatrix = new List<string>[matrixA.GetLength(0), matrixB.GetLength(0)];
-            for (var i = 0; i < matrixA.GetLength(0); i++)
+            List<string>[,] concatMatrix = new List<string>[matrixA.GetLength(0), matrixB.GetLength(0)]; // создаём новую матрицу
+            for (var i = 0; i < matrixA.GetLength(0); i++) 
             {
-                for (var j = 0; j < matrixB.GetLength(1); j++)
+                for (var j = 0; j < matrixB.GetLength(1); j++) 
                 {
-                    List<string> tmp = new List<string>();
-                    for (int k = 0; k < matrixA.GetLength(1); k++)
-                        if (matrixA[i, k][0] != "0")
-                            for (int y = 0; y < matrixA[i, k].Count; y++)
-                                if (matrixB[k, j] != 0)
-                                    tmp.Add((matrixA[i, k][y].ToString() + matrixB[k, j].ToString()));
-                    if (tmp.Count == 0)
+                    List<string> tmp = new List<string>(); // создаём временную переменную, для заполнения
+                    for (int k = 0; k < matrixA.GetLength(1); k++) 
+                        if (matrixA[i, k][0] != "0") // проверяем, не является ли число нулём
+                            for (int y = 0; y < matrixA[i, k].Count; y++) // пробегаемся по всем путям , которые находятся в памяти для вершин i,k
+                                if (matrixB[k, j] != 0)  // проверям на 0
+                                {
+                                    tmp.Add((matrixA[i, k][y].ToString() + matrixB[k, j].ToString())); // добавляем к пути новую вершину
+                                }
+                    if (tmp.Count == 0) // если tmp осталось пустым, тогда добавляем к нему 0 , для заполнености 
                         tmp.Add("0");
-                    concatMatrix[i, j] = tmp;
+                    concatMatrix[i, j] = tmp; // для одной ячейки путь заполнен
                 }
             }
-            return concatMatrix;
+            return concatMatrix; // возвращаем итоговую матрицу
         }
 
         public static List<string>[,] IntToListString(int[,] matrix)
