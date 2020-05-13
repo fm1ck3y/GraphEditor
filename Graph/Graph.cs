@@ -169,46 +169,47 @@ namespace Graph
         public Dictionary<Vertex, int> MarkAllVertex(Vertex v_start, Vertex v_end, Dictionary<Vertex, int> visited_v, int d = 0)
         {
             d = 0;
-            visited_v[v_start] = d;
-            while (!visited_v.ContainsKey(v_end) && d < _vertexs.Count)
+            visited_v[v_start] = d; // помечаем начальную вершину
+            while (!visited_v.ContainsKey(v_end) && d < _vertexs.Count) // закончится тогда, когда будет помечена последняя вершина и d < количества вершин
             {
-                Dictionary<Vertex, int> _visited = new Dictionary<Vertex, int>();
-                foreach (var h in visited_v.Keys)
+                Dictionary<Vertex, int> _visited = new Dictionary<Vertex, int>(); // помеченные вершины
+                foreach (var h in visited_v.Keys) // пробегаемся по всем вершинам , которые были помечены весом  d
                     if (visited_v[h] == d)
-                        foreach (Edge edge in _edges)
+                        foreach (Edge edge in _edges) // пробегаемся по всем соседням вершинам обрабатываемой вершины
                             if (edge.v1 == h && !visited_v.ContainsKey(edge.v2))
-                                _visited[edge.v2] = d + 1;
+                                _visited[edge.v2] = d + 1; // помечаем их весом d+1
                 d++;
                 foreach (var h in _visited.Keys)
-                    visited_v.Add(h, _visited[h]);
+                    visited_v.Add(h, _visited[h]); // обозначаем помеченными
             }
             return visited_v;
         }
         public List<Vertex> Wave(Vertex v_start, Vertex v_end)
         {
-            List<Vertex> way = new List<Vertex>();
-            Dictionary<Vertex, int> _visited = new Dictionary<Vertex, int>();
-            visited = new Dictionary<Vertex, bool>();
-            _visited = MarkAllVertex(v_start, v_end, _visited);
-            int[,] matrix = MakeNonOriented();
-            Graph g = DownloadAdjacencyMatrix(matrix, null, _vertexs);
-            Vertex last_vertex = v_end;
-            if (_visited.ContainsKey(v_end))
+            List<Vertex> way = new List<Vertex>(); // кратчайший путь
+            Dictionary<Vertex, int> _visited = new Dictionary<Vertex, int>(); // посещенные вершины
+            visited = new Dictionary<Vertex, bool>(); 
+            _visited = MarkAllVertex(v_start, v_end, _visited); // помеченные вершины своим весом
+            int[,] matrix = MakeNonOriented(); // матрица смежности неориентированного графа
+            // это нужно для правильного восстановления пути
+            Graph g = DownloadAdjacencyMatrix(matrix, null, _vertexs); // преобразования матрицы смежности неориентированного графа в Граф
+            Vertex last_vertex = v_end; // начинается с вершины, до которой ищется кратчайший путь
+            if (_visited.ContainsKey(v_end)) // если конечная вершина есть в списке помеченных, то можно начинать восстановление пути
             {
-                while (last_vertex.name != v_start.name)
-                    foreach (Edge edge in g.edges)
+                while (last_vertex.name != v_start.name) // восстановление пути закончится тогда, когда обрабатываемая вершина станет начальной
+                    foreach (Edge edge in g.edges) // пробегаемся по всем соседнем вершинам обрабатываемой вершины ( инцедентным рёбрам )
                         if (edge.v1.name == last_vertex.name && _visited.ContainsKey(edge.v2))
-                            if (_visited[edge.v2] == _visited[last_vertex] - 1)
+                            if (_visited[edge.v2] == _visited[last_vertex] - 1) // берётся соседняя вершина помеченная n-1
                             {
                                 last_vertex = edge.v2;
                                 if (edge.v2.name != v_start.name)
-                                    way.Add(edge.v2);
+                                    way.Add(edge.v2); // добавляем в путь
                                 break;
                             }
                 way.Add(v_start);
                 way.Reverse();
                 way.Add(v_end);
-                return way;
+                return way; // возвращаем путь полученный волновым алгоритмом
             }
             return null;
         }
