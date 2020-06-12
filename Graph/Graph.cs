@@ -188,7 +188,7 @@ namespace Graph
         {
             List<Vertex> way = new List<Vertex>(); // кратчайший путь
             Dictionary<Vertex, int> _visited = new Dictionary<Vertex, int>(); // посещенные вершины
-            visited = new Dictionary<Vertex, bool>(); 
+            visited = new Dictionary<Vertex, bool>();
             _visited = MarkAllVertex(v_start, v_end, _visited); // помеченные вершины своим весом
             int[,] matrix = MakeNonOriented(); // матрица смежности неориентированного графа
             // это нужно для правильного восстановления пути
@@ -570,22 +570,18 @@ namespace Graph
             var matrix = GetAllDistancesDijkstra(); // получаем матрицу кратчайшех путей по Алгоритму Дейкстры
             var mainMatrix = CreateAdjacencyMatrix();
             double[,] newMatrix = new double[_edges.Count, _vertexs.Count];
-            FileStream fs = new FileStream(filename, FileMode.Create, FileAccess.Write);
-            using (StreamWriter sw = new StreamWriter(fs))
-                for (int i = 0; i < _edges.Count; i++)
-                {
-                    sw.Write(_vertexs.IndexOf(_edges[i].v1).ToString() + "," + _vertexs.IndexOf(_edges[i].v2).ToString() + " - ");
-                    for (int j = 0; j < _vertexs.Count; j++)
-                    {
-                        newMatrix[i, j] = ((double)(matrix[j, _vertexs.IndexOf(_edges[i].v1)] + matrix[j, _vertexs.IndexOf(_edges[i].v2)] + mainMatrix[_vertexs.IndexOf(_edges[i].v1), _vertexs.IndexOf(_edges[i].v2)]) / 2);
-                        sw.Write(newMatrix[i, j].ToString() + " ");
-                    }
-                    sw.WriteLine();
-                }
             double[] vector = new double[newMatrix.GetLength(1)];
-            for (int i = 0; i < newMatrix.GetLength(0); i++)
-                for (int j = 0; j < newMatrix.GetLength(1); j++)
-                    if (newMatrix[i, j] > vector[j]) vector[j] = newMatrix[i, j]; // находим наибольшее число в строке
+            for (int i = 0; i < _edges.Count; i++)
+            {
+                for (int j = 0; j < _vertexs.Count; j++)
+                {
+                    //d ‘ (j, (r, s))= (d j,r + d j,s +a r,s)/2,
+                    int r = _vertexs.IndexOf(_edges[i].v1);
+                    int s = _vertexs.IndexOf(_edges[i].v2);
+                    newMatrix[i, j] = ((double)(matrix[j, r] + matrix[j, s] + mainMatrix[r, s]) / 2);
+                    if (newMatrix[i, j] > vector[j]) vector[j] = newMatrix[i, j];
+                }
+            }
             int index = 0;
             double min = vector[0]; // переменная для минимального из наибольших чисел
             // тут просто находим минимальное из наибольших чисел и его индекс

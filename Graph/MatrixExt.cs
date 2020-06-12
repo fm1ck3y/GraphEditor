@@ -65,7 +65,7 @@ namespace Graph
 
         public static int[,] BoolPowMatrix(int[,] matrixA, int n)
         {
-            var matrixC = new int[matrixA.RowsCount(), matrixA.ColumnsCount()];
+            var matrixC = matrixA;
             for (int i = 0; i < n - 1; i++)
                 matrixC = BoolMatrixMultiplication(matrixC, matrixA);
             return matrixC;
